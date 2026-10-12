@@ -59,6 +59,8 @@ type NodePoolReconciler struct {
 func (r *NodePoolReconciler) Reconcile(
 	ctx context.Context, req ctrl.Request,
 ) (ctrl.Result, error) {
+	// Watch events trigger work, but cached observations cannot authorize a
+	// destructive action; pool and Node checks use the uncached API reader.
 	if r.APIReader == nil {
 		return ctrl.Result{}, fmt.Errorf("NodePoolReconciler requires an uncached APIReader")
 	}
@@ -70,6 +72,7 @@ func (r *NodePoolReconciler) Reconcile(
 	// Keep the finalizer until eligible cleanup and its status update succeed.
 	if !pool.DeletionTimestamp.IsZero() {
 		if !controllerutil.ContainsFinalizer(&pool, nodeSettingsFinalizer) {
+			// Do not adopt cleanup responsibility after deletion has already started.
 			return ctrl.Result{}, nil
 		}
 		failures, syncErr := r.syncNodeSettings(ctx, &pool)

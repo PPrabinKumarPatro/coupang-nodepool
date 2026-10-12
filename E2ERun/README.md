@@ -35,10 +35,8 @@ Verify the recorded output files from the repository root:
 (cd E2ERun && sha256sum -c SHA256SUMS)
 ```
 
-Source checksums refer to the [recorded source snapshot](https://github.com/PPrabinKumarPatro/coupang-nodepool/tree/4f911d45b4be2d01a5ad9861eef39138008a9c5f),
-not later revisions. Run the source check below from that snapshot; even
-comment-only changes alter a file's checksum. The original hashes are retained
-instead of presenting later edits as part of the recorded test run.
+For source verification, run the following from the recorded E2E source
+revision, [`4f911d4`](https://github.com/PPrabinKumarPatro/coupang-nodepool/tree/4f911d45b4be2d01a5ad9861eef39138008a9c5f):
 
 ```bash
 sha256sum -c E2ERun/SOURCE-SHA256SUMS

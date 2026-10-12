@@ -121,6 +121,8 @@ func (r *NodePoolReconciler) syncOneNodeSettings(
 
 	var labels map[string]string
 	var taints []corev1.Taint
+	// Departed members and pool deletion use empty desired state to clean owned
+	// settings through the same planner, without adopting another pool's receipt.
 	if !deleting && member {
 		// Ready=False, Ready=Unknown and missing Ready do not prevent API writes.
 		labels, taints = pool.Spec.Labels, pool.Spec.Taints
@@ -158,6 +160,7 @@ func (r *NodePoolReconciler) syncOneNodeSettings(
 func nodeSettingsOwnedBy(node *corev1.Node, poolUID types.UID) (bool, error) {
 	raw, found := node.Annotations[nodeSettingsAnnotation]
 	if !found {
+		// Matching live settings without a receipt are not proof of ownership.
 		return false, nil
 	}
 	var ownership nodeSettingsOwnership
@@ -170,6 +173,8 @@ func nodeSettingsOwnedBy(node *corev1.Node, poolUID types.UID) (bool, error) {
 	return ownership.PoolUID == poolUID, nil
 }
 
+// Status history identifies cleanup responsibility, not the values we own.
+// A known former member with malformed ownership must still fail safely.
 func nodeSettingsPreviouslyObserved(pool *nodesv1alpha1.NodePool, uid types.UID) bool {
 	for _, previous := range pool.Status.Nodes {
 		if previous.UID == string(uid) {

@@ -19,6 +19,8 @@ import (
 	nodesv1alpha1 "example.com/nodepool-controller/api/v1alpha1"
 )
 
+// Cordon ownership is separate: lifecycle actions can run even when the pool
+// owns no labels or taints and therefore has no managed-settings receipt.
 const nodeCordonAnnotation = "nodes.example.com/cordon-owner"
 
 func (r *NodePoolReconciler) cleanupNodeCordon(
@@ -30,6 +32,8 @@ func (r *NodePoolReconciler) cleanupNodeCordon(
 	if protectedNode(node) && !nodeIsReady(node) && pool.DeletionTimestamp.IsZero() {
 		return fmt.Errorf("protected Node %q requires Ready=True before owned cordon cleanup", node.Name)
 	}
+	// Pool deletion skips unready Nodes. A live pool instead keeps its owned
+	// cordon until recovery, Ignore, or membership departure cancels that need.
 	if !pool.DeletionTimestamp.IsZero() {
 		if !nodeIsReady(node) {
 			return nil
@@ -217,6 +221,7 @@ func (r *NodePoolReconciler) advanceNode(
 		return nil
 	}
 	if state.Phase == "Removing" {
+		// Newly observed Pods invalidate earlier drain completion, even if persisted.
 		state.Phase = "Draining"
 		blockNode(state, "PodsAppeared", "Pods appeared after draining; Node deletion is postponed")
 		return nil
@@ -262,6 +267,8 @@ func (r *NodePoolReconciler) advanceNode(
 			blockNode(state, "DrainTimedOut", "Drain deadline reached during authorization; no further evictions")
 			return nil
 		}
+		// Authorization itself can consume the remaining budget, hence the
+		// second deadline check immediately before this eviction request.
 		err = r.SubResource("eviction").Create(ctx, pod, eviction)
 		if apierrors.IsNotFound(err) {
 			continue
@@ -298,6 +305,7 @@ func (r *NodePoolReconciler) drainPods(
 			continue
 		}
 		if _, mirror := pod.Annotations[corev1.MirrorPodAnnotationKey]; mirror {
+			// Deleting the API mirror would not stop the kubelet-managed static workload.
 			continue
 		}
 		owner := metav1.GetControllerOf(pod)

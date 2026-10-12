@@ -15,6 +15,8 @@ import (
 
 const nodeSettingsAnnotation = "nodes.example.com/managed-settings"
 
+// The Node carries this receipt even after membership changes. Pool status
+// tracks lifecycle progress; this record retains values needed for safe cleanup.
 type nodeSettingsOwnership struct {
 	PoolUID types.UID         `json:"poolUID"`
 	Labels  map[string]string `json:"labels,omitempty"`
@@ -43,6 +45,8 @@ func planNodeSettings(
 	if err != nil {
 		return nil, fmt.Errorf("desired taints: %w", err)
 	}
+	// Empty desired settings still allow owned cleanup after a worker is promoted
+	// to a protected role; the caller separately enforces readiness for that cleanup.
 	if protectedNode(node) && len(desiredLabels)+len(desiredTaints) != 0 {
 		return nil, fmt.Errorf("protected Node %q cannot receive NodePool desired settings", node.Name)
 	}
@@ -58,6 +62,7 @@ func planNodeSettings(
 		}
 	}
 	if err := nodeSettingsValidateLabels(old.Labels); err != nil {
+		// Do not let a legacy receipt remove reserved membership or role labels.
 		return nil, fmt.Errorf("owned labels require manual repair: %w", err)
 	}
 	ownedTaints, err := nodeSettingsTaintMap(old.Taints, false)
@@ -165,9 +170,11 @@ func planNodeSettings(
 	}
 
 	if len(next.Labels)+len(nextTaints) == 0 {
+		// With no owned settings left, release the receipt so another pool can claim.
 		delete(out.Annotations, nodeSettingsAnnotation)
 	} else if !maps.Equal(old.Labels, next.Labels) ||
 		!maps.Equal(ownedTaints, nextTaints) {
+		// Keep the annotation unchanged on no-op passes, including its JSON encoding.
 		for _, id := range nodeSettingsKeys(nextTaints, nil) {
 			next.Taints = append(next.Taints, nextTaints[id])
 		}

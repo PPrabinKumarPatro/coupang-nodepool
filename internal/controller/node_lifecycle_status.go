@@ -20,6 +20,7 @@ import (
 func setLifecycleConditions(pool *nodesv1alpha1.NodePool, reconcileErr, memberErr error, observationFailed bool) {
 	// Ready reports observed Node health, not successful settings convergence
 	// or permission to disrupt those Nodes.
+	// An empty pool is Unknown: no member health has been observed.
 	ready, readyReason, readyMessage := metav1.ConditionUnknown, "NoMembers", "No member Nodes were observed"
 	if len(pool.Status.Nodes) > 0 {
 		ready, readyReason, readyMessage = metav1.ConditionFalse, "MembersNotReady", "At least one member lacks Ready=True"
@@ -46,6 +47,8 @@ func setLifecycleConditions(pool *nodesv1alpha1.NodePool, reconcileErr, memberEr
 		progressReason, progressMessage = "Blocked", "Lifecycle work is blocked; safety constraints are not bypassed"
 	}
 	if reconcileErr != nil {
+		// Shared failure stops progress; a member-only failure below can coexist
+		// with progress already observed on other members.
 		failed, failedReason, failedMessage = metav1.ConditionTrue, "ReconcileFailed", reconcileErr.Error()
 		progress, progressReason, progressMessage = metav1.ConditionFalse, "ReconcileFailed", "Retrying after a reconciliation error"
 	} else if memberErr != nil {
@@ -70,6 +73,7 @@ func (r *NodePoolReconciler) persistPoolStatus(
 	ctx context.Context, pool, desired *nodesv1alpha1.NodePool,
 ) error {
 	if equality.Semantic.DeepEqual(pool.Status, desired.Status) {
+		// Avoid version churn that would invalidate otherwise-current reservations.
 		return nil
 	}
 	before := pool.DeepCopy()
@@ -78,6 +82,8 @@ func (r *NodePoolReconciler) persistPoolStatus(
 	)); err != nil {
 		return err
 	}
+	// Carry the API response's resource version into subsequent authorization
+	// checks, which must validate the reservation that was actually persisted.
 	*pool = *desired
 	// Emit only after status is durable. Events are best-effort: a crash here
 	// can lose an Event, so recovery relies on status rather than Event history.
@@ -139,6 +145,7 @@ func (r *NodePoolReconciler) emitStatusTransitions(
 	}
 	for _, condition := range after.Status.Conditions {
 		old := meta.FindStatusCondition(before.Status.Conditions, condition.Type)
+		// Message/timestamp-only changes are not new transitions; avoid retry noise.
 		if old == nil || old.Status != condition.Status || old.Reason != condition.Reason {
 			eventType := corev1.EventTypeNormal
 			if condition.Type == "Failed" && condition.Status == metav1.ConditionTrue {

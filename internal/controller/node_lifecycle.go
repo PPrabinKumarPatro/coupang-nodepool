@@ -118,8 +118,11 @@ func planLifecycle(pool *nodesv1alpha1.NodePool, members []corev1.Node,
 		if nodeIsReady(node) {
 			ready++
 		}
+		// Ordering matters: deletion/protection take precedence over policy,
+		// and confirmed recovery cancels removal before new work is considered.
 		switch {
 		case !node.DeletionTimestamp.IsZero():
+			// An accepted deletion cannot be cancelled; retain its slot until gone.
 			state.Phase = "Removing"
 			state.DrainStartedAt = old.DrainStartedAt.DeepCopy()
 			markNodeDeletionPending(&state, node)
@@ -134,12 +137,15 @@ func planLifecycle(pool *nodesv1alpha1.NodePool, members []corev1.Node,
 		case state.Phase == "Ready":
 			state.Reason = "NodeReady"
 		case pool.Spec.UnreadyPolicy.Action == "Ignore":
+			// Ignore does not disable the separate settings-synchronization pass.
 			state.Reason = "PolicyIgnored"
 		case state.NotReadySince.Sub(now) > time.Second:
+			// Upward timestamp rounding explains at most one second of apparent skew.
 			state.Reason, state.Message, state.Blocked = "ClockSkew", "NotReadySince is in the future; refusing early action", true
 		case now.Before(state.NotReadySince.Add(policy.grace)):
 			state.Reason = "GracePeriod"
 		case pool.Spec.UnreadyPolicy.Action == "Cordon":
+			// Switching from Remove drops drain state but keeps the scheduling block.
 			state.Reason = "CordonPending"
 			if node.Spec.Unschedulable {
 				state.Reason = "Cordoned"
@@ -150,6 +156,7 @@ func planLifecycle(pool *nodesv1alpha1.NodePool, members []corev1.Node,
 			state.Phase = old.Phase
 			state.DrainStartedAt = old.DrainStartedAt.DeepCopy()
 			if state.DrainStartedAt == nil {
+				// Initialize older incomplete status once, before any eviction.
 				start := lifecycleTimestamp(now)
 				state.DrainStartedAt = &start
 			}
@@ -160,6 +167,7 @@ func planLifecycle(pool *nodesv1alpha1.NodePool, members []corev1.Node,
 		}
 		if !protectedNode(node) && (state.Reason == "SettingsFailed" ||
 			state.Reason == "ActionFailed" || state.Reason == "ProtectedNode") {
+			// Re-evaluate transient blockers so repair can resume the existing work.
 			state.Reason, state.Message, state.Blocked = "Retrying", "", false
 			if pool.Spec.UnreadyPolicy.Action == "Cordon" {
 				state.Reason = "CordonPending"
@@ -261,11 +269,13 @@ func (r *NodePoolReconciler) reconcileLivePool(
 			break
 		}
 		if settingsFailures[state.Name] != nil {
+			// Unresolved settings ownership also blocks lifecycle actions on this Node.
 			continue
 		}
 		if err := r.advanceNode(ctx, pool, state, policy); err != nil {
 			state.Blocked, state.Reason, state.Message = true, "ActionFailed", err.Error()
 			if isPoolScopeError(err) || ctx.Err() != nil {
+				// Shared authorization is no longer valid; do not advance later members.
 				poolErr = err
 				break
 			}
