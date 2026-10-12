@@ -1,0 +1,59 @@
+apiVersion: nodes.example.com/v1alpha1
+kind: NodePool
+metadata:
+  creationTimestamp: "2026-10-12T02:41:52Z"
+  finalizers:
+  - nodes.example.com/settings-cleanup
+  generation: 1
+  name: manual-pool
+  resourceVersion: "1716"
+  uid: 017f6261-13b3-49b4-abb1-2a924ef8a2d4
+spec:
+  image: informational-no-provisioning
+  labels:
+    workload: manual-demo
+  unreadyPolicy:
+    action: Remove
+    drainTimeout: 120s
+    gracePeriod: 15s
+    maxConcurrentRemovals: 1
+status:
+  conditions:
+  - lastTransitionTime: "2026-10-12T02:44:27Z"
+    message: At least one member lacks Ready=True
+    observedGeneration: 1
+    reason: MembersNotReady
+    status: "False"
+    type: Ready
+  - lastTransitionTime: "2026-10-12T02:44:53Z"
+    message: Lifecycle work is blocked; safety constraints are not bypassed
+    observedGeneration: 1
+    reason: Blocked
+    status: "False"
+    type: Progressing
+  - lastTransitionTime: "2026-10-12T02:44:53Z"
+    message: 'coupang-nodepool-manual-worker: EvictionBlocked: Eviction refused or
+      throttled; disruption budgets are not bypassed: Cannot evict pod as it would
+      violate the pod''s disruption budget.'
+    observedGeneration: 1
+    reason: LifecycleBlocked
+    status: "True"
+    type: Failed
+  nodes:
+  - blocked: true
+    drainStartedAt: "2026-10-12T02:44:44Z"
+    message: 'Eviction refused or throttled; disruption budgets are not bypassed:
+      Cannot evict pod as it would violate the pod''s disruption budget.'
+    name: coupang-nodepool-manual-worker
+    notReadySince: "2026-10-12T02:44:28Z"
+    phase: Draining
+    readyTransitionTime: "2026-10-12T02:44:27Z"
+    reason: EvictionBlocked
+    uid: 153556e3-d868-416d-ade6-a2a44b16e755
+  - name: coupang-nodepool-manual-worker2
+    phase: Ready
+    readyTransitionTime: "2026-10-12T02:36:29Z"
+    reason: NodeReady
+    uid: b990a1a1-4a33-43fb-9129-3c31e7714174
+  observedGeneration: 1
+  readyNodes: 1

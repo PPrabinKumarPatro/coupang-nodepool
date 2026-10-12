@@ -1,0 +1,56 @@
+apiVersion: nodes.example.com/v1alpha1
+kind: NodePool
+metadata:
+  creationTimestamp: "2026-10-12T02:29:48Z"
+  finalizers:
+  - nodes.example.com/settings-cleanup
+  generation: 1
+  name: lab-demo
+  resourceVersion: "132518"
+  uid: 9e183592-64f1-4037-a316-49f89aa1b19b
+spec:
+  image: informational-no-provisioning
+  labels:
+    workload: nodepool-demo
+  taints:
+  - effect: NoSchedule
+    key: nodes.example.com/demo
+    value: lab
+  unreadyPolicy:
+    action: Ignore
+    drainTimeout: 120s
+    gracePeriod: 60s
+    maxConcurrentRemovals: 1
+status:
+  conditions:
+  - lastTransitionTime: "2026-10-12T02:29:48Z"
+    message: All observed members report Ready=True
+    observedGeneration: 1
+    reason: MembersReady
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2026-10-12T02:29:48Z"
+    message: No lifecycle work is pending
+    observedGeneration: 1
+    reason: Stable
+    status: "False"
+    type: Progressing
+  - lastTransitionTime: "2026-10-12T02:29:48Z"
+    message: No reconciliation failure or safety blocker
+    observedGeneration: 1
+    reason: NoFailure
+    status: "False"
+    type: Failed
+  nodes:
+  - name: coupang-lab-worker-1
+    phase: Ready
+    readyTransitionTime: "2026-10-10T18:22:07Z"
+    reason: NodeReady
+    uid: 949ef512-4550-4307-b700-a8c8c941645e
+  - name: coupang-lab-worker-2
+    phase: Ready
+    readyTransitionTime: "2026-10-10T18:22:07Z"
+    reason: NodeReady
+    uid: f1362c87-fd33-4f9a-ab18-e5c704847223
+  observedGeneration: 1
+  readyNodes: 2

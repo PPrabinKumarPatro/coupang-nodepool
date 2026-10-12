@@ -1,0 +1,2 @@
+node/coupang-nodepool-manual-worker labeled
+node/coupang-nodepool-manual-worker2 labeled

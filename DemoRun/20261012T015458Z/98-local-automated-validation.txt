@@ -1,0 +1,1189 @@
+Mon Oct 12 02:57:38 UTC 2026
+go version go1.27.2 linux/amd64
+CGO_ENABLED=0 go build -mod=readonly -trimpath -o bin/manager ./cmd
+make vet
+make[1]: Entering directory '/home/devuser/coupang-nodepool'
+go vet -mod=readonly ./...
+make[1]: Leaving directory '/home/devuser/coupang-nodepool'
+?   	example.com/nodepool-controller/api/v1alpha1	[no test files]
+?   	example.com/nodepool-controller/cmd	[no test files]
+-test.shuffle 1791773871333879135
+=== RUN   TestProtectedCleanupBoundary
+=== RUN   TestProtectedCleanupBoundary/leave/True
+=== RUN   TestProtectedCleanupBoundary/leave/False
+=== RUN   TestProtectedCleanupBoundary/leave/Unknown
+=== RUN   TestProtectedCleanupBoundary/leave/
+=== RUN   TestProtectedCleanupBoundary/clear_settings/True
+=== RUN   TestProtectedCleanupBoundary/clear_settings/False
+=== RUN   TestProtectedCleanupBoundary/clear_settings/Unknown
+=== RUN   TestProtectedCleanupBoundary/clear_settings/
+=== RUN   TestProtectedCleanupBoundary/delete_pool/True
+=== RUN   TestProtectedCleanupBoundary/delete_pool/False
+=== RUN   TestProtectedCleanupBoundary/delete_pool/Unknown
+=== RUN   TestProtectedCleanupBoundary/delete_pool/
+--- PASS: TestProtectedCleanupBoundary (1.25s)
+    --- PASS: TestProtectedCleanupBoundary/leave/True (0.94s)
+    --- PASS: TestProtectedCleanupBoundary/leave/False (0.02s)
+    --- PASS: TestProtectedCleanupBoundary/leave/Unknown (0.02s)
+    --- PASS: TestProtectedCleanupBoundary/leave/ (0.02s)
+    --- PASS: TestProtectedCleanupBoundary/clear_settings/True (0.04s)
+    --- PASS: TestProtectedCleanupBoundary/clear_settings/False (0.03s)
+    --- PASS: TestProtectedCleanupBoundary/clear_settings/Unknown (0.02s)
+    --- PASS: TestProtectedCleanupBoundary/clear_settings/ (0.02s)
+    --- PASS: TestProtectedCleanupBoundary/delete_pool/True (0.05s)
+    --- PASS: TestProtectedCleanupBoundary/delete_pool/False (0.03s)
+    --- PASS: TestProtectedCleanupBoundary/delete_pool/Unknown (0.03s)
+    --- PASS: TestProtectedCleanupBoundary/delete_pool/ (0.03s)
+=== RUN   TestLifecycleBlockedRemovalAndConcurrency
+--- PASS: TestLifecycleBlockedRemovalAndConcurrency (0.11s)
+=== RUN   TestLifecyclePodClassification
+=== RUN   TestLifecyclePodClassification/managed
+=== RUN   TestLifecyclePodClassification/terminating
+=== RUN   TestLifecyclePodClassification/unmanaged
+=== RUN   TestLifecyclePodClassification/emptyDir
+=== RUN   TestLifecyclePodClassification/hostPath
+=== RUN   TestLifecyclePodClassification/mirror
+=== RUN   TestLifecyclePodClassification/completed
+=== RUN   TestLifecyclePodClassification/daemonset
+=== RUN   TestLifecyclePodClassification/orphaned_daemonset
+--- PASS: TestLifecyclePodClassification (0.42s)
+    --- PASS: TestLifecyclePodClassification/managed (0.05s)
+    --- PASS: TestLifecyclePodClassification/terminating (0.04s)
+    --- PASS: TestLifecyclePodClassification/unmanaged (0.05s)
+    --- PASS: TestLifecyclePodClassification/emptyDir (0.04s)
+    --- PASS: TestLifecyclePodClassification/hostPath (0.06s)
+    --- PASS: TestLifecyclePodClassification/mirror (0.04s)
+    --- PASS: TestLifecyclePodClassification/completed (0.05s)
+    --- PASS: TestLifecyclePodClassification/daemonset (0.04s)
+    --- PASS: TestLifecyclePodClassification/orphaned_daemonset (0.05s)
+=== RUN   TestSettingsPreexistingNodeAndPoolHandoff
+--- PASS: TestSettingsPreexistingNodeAndPoolHandoff (0.10s)
+=== RUN   TestReservedRoleLabelsAndLegacyReceipts
+=== RUN   TestReservedRoleLabelsAndLegacyReceipts/node-role.kubernetes.io/control-plane
+=== RUN   TestReservedRoleLabelsAndLegacyReceipts/node-role.kubernetes.io/master
+--- PASS: TestReservedRoleLabelsAndLegacyReceipts (0.00s)
+    --- PASS: TestReservedRoleLabelsAndLegacyReceipts/node-role.kubernetes.io/control-plane (0.00s)
+    --- PASS: TestReservedRoleLabelsAndLegacyReceipts/node-role.kubernetes.io/master (0.00s)
+=== RUN   TestMemberPoolRequests
+=== RUN   TestMemberPoolRequests/unlabeled
+=== RUN   TestMemberPoolRequests/unrelated_label
+=== RUN   TestMemberPoolRequests/empty_membership
+=== RUN   TestMemberPoolRequests/member
+--- PASS: TestMemberPoolRequests (0.00s)
+    --- PASS: TestMemberPoolRequests/unlabeled (0.00s)
+    --- PASS: TestMemberPoolRequests/unrelated_label (0.00s)
+    --- PASS: TestMemberPoolRequests/empty_membership (0.00s)
+    --- PASS: TestMemberPoolRequests/member (0.00s)
+=== RUN   TestSettingsPoolFence
+=== RUN   TestSettingsPoolFence/spec_changed
+=== RUN   TestSettingsPoolFence/deletion_started
+=== RUN   TestSettingsPoolFence/finalizer_removed
+=== RUN   TestSettingsPoolFence/pool_replaced
+--- PASS: TestSettingsPoolFence (0.09s)
+    --- PASS: TestSettingsPoolFence/spec_changed (0.02s)
+    --- PASS: TestSettingsPoolFence/deletion_started (0.02s)
+    --- PASS: TestSettingsPoolFence/finalizer_removed (0.02s)
+    --- PASS: TestSettingsPoolFence/pool_replaced (0.03s)
+=== RUN   TestSettingsFinalizerBeforeMutation
+--- PASS: TestSettingsFinalizerBeforeMutation (0.04s)
+=== RUN   TestLifecyclePoliciesAndProtection
+=== RUN   TestLifecyclePoliciesAndProtection/Ignore
+=== RUN   TestLifecyclePoliciesAndProtection/preexisting_cordon
+=== RUN   TestLifecyclePoliciesAndProtection/control-plane
+=== RUN   TestLifecyclePoliciesAndProtection/master
+=== RUN   TestLifecyclePoliciesAndProtection/foreign_cordon
+=== RUN   TestLifecyclePoliciesAndProtection/cleared_cordon
+--- PASS: TestLifecyclePoliciesAndProtection (0.18s)
+    --- PASS: TestLifecyclePoliciesAndProtection/Ignore (0.03s)
+    --- PASS: TestLifecyclePoliciesAndProtection/preexisting_cordon (0.03s)
+    --- PASS: TestLifecyclePoliciesAndProtection/control-plane (0.03s)
+    --- PASS: TestLifecyclePoliciesAndProtection/master (0.03s)
+    --- PASS: TestLifecyclePoliciesAndProtection/foreign_cordon (0.03s)
+    --- PASS: TestLifecyclePoliciesAndProtection/cleared_cordon (0.03s)
+=== RUN   TestLifecycleLimitReductionPreservesExistingSlots
+--- PASS: TestLifecycleLimitReductionPreservesExistingSlots (0.07s)
+=== RUN   TestLifecycleExtendedTimeoutPreservesStart
+--- PASS: TestLifecycleExtendedTimeoutPreservesStart (0.07s)
+=== RUN   TestSettingsFinalizerAddConflict
+--- PASS: TestSettingsFinalizerAddConflict (0.02s)
+=== RUN   TestPoolFailureStopsAllLifecycleActions
+--- PASS: TestPoolFailureStopsAllLifecycleActions (0.06s)
+=== RUN   TestSettingsDeletionEligibility
+--- PASS: TestSettingsDeletionEligibility (0.05s)
+=== RUN   TestMemberReplacementFailureDoesNotActOnNewUID
+--- PASS: TestMemberReplacementFailureDoesNotActOnNewUID (0.03s)
+=== RUN   TestLifecycleNodeFinalizersBlockWithoutReleasingSlot
+--- PASS: TestLifecycleNodeFinalizersBlockWithoutReleasingSlot (0.07s)
+=== RUN   TestSettingsSpecChangeAndMembershipLeave
+--- PASS: TestSettingsSpecChangeAndMembershipLeave (0.08s)
+=== RUN   TestLifecyclePolicyValidation
+=== RUN   TestLifecyclePolicyValidation/valid
+=== RUN   TestLifecyclePolicyValidation/negative_grace
+=== RUN   TestLifecyclePolicyValidation/fraction
+=== RUN   TestLifecyclePolicyValidation/compound
+=== RUN   TestLifecyclePolicyValidation/zero_timeout
+=== RUN   TestLifecyclePolicyValidation/leading-zero_timeout
+=== RUN   TestLifecyclePolicyValidation/invalid_action
+=== RUN   TestLifecyclePolicyValidation/zero_limit
+--- PASS: TestLifecyclePolicyValidation (0.00s)
+    --- PASS: TestLifecyclePolicyValidation/valid (0.00s)
+    --- PASS: TestLifecyclePolicyValidation/negative_grace (0.00s)
+    --- PASS: TestLifecyclePolicyValidation/fraction (0.00s)
+    --- PASS: TestLifecyclePolicyValidation/compound (0.00s)
+    --- PASS: TestLifecyclePolicyValidation/zero_timeout (0.00s)
+    --- PASS: TestLifecyclePolicyValidation/leading-zero_timeout (0.00s)
+    --- PASS: TestLifecyclePolicyValidation/invalid_action (0.00s)
+    --- PASS: TestLifecyclePolicyValidation/zero_limit (0.00s)
+=== RUN   TestLifecycleStatusConflictPreventsMutation
+--- PASS: TestLifecycleStatusConflictPreventsMutation (0.01s)
+=== RUN   TestLifecycleDisappearingPodDoesNotBlockOtherEvictions
+--- PASS: TestLifecycleDisappearingPodDoesNotBlockOtherEvictions (0.06s)
+=== RUN   TestScenarioReadinessTransitionGrace
+=== RUN   TestScenarioReadinessTransitionGrace/new_failure
+=== RUN   TestScenarioReadinessTransitionGrace/Unknown
+=== RUN   TestScenarioReadinessTransitionGrace/clock_regression
+=== RUN   TestScenarioReadinessTransitionGrace/missing_condition
+=== RUN   TestScenarioReadinessTransitionGrace/unchanged
+=== RUN   TestScenarioReadinessTransitionGrace/legacy_older
+=== RUN   TestScenarioReadinessTransitionGrace/legacy_newer
+--- PASS: TestScenarioReadinessTransitionGrace (0.44s)
+    --- PASS: TestScenarioReadinessTransitionGrace/new_failure (0.07s)
+    --- PASS: TestScenarioReadinessTransitionGrace/Unknown (0.07s)
+    --- PASS: TestScenarioReadinessTransitionGrace/clock_regression (0.07s)
+    --- PASS: TestScenarioReadinessTransitionGrace/missing_condition (0.07s)
+    --- PASS: TestScenarioReadinessTransitionGrace/unchanged (0.05s)
+    --- PASS: TestScenarioReadinessTransitionGrace/legacy_older (0.06s)
+    --- PASS: TestScenarioReadinessTransitionGrace/legacy_newer (0.07s)
+=== RUN   TestLifecycleRemovalSequenceAndRestart
+--- PASS: TestLifecycleRemovalSequenceAndRestart (0.07s)
+=== RUN   TestLifecycleFutureClockAndOldestReservation
+--- PASS: TestLifecycleFutureClockAndOldestReservation (0.00s)
+=== RUN   TestLifecycleSubsecondGraceNeverActsEarly
+--- PASS: TestLifecycleSubsecondGraceNeverActsEarly (0.05s)
+=== RUN   TestSettingsNoExecuteIsNotSuppressedByIgnore
+--- PASS: TestSettingsNoExecuteIsNotSuppressedByIgnore (0.03s)
+=== RUN   TestLifecycleEvictionConflictPreservesPodReplacement
+--- PASS: TestLifecycleEvictionConflictPreservesPodReplacement (0.05s)
+=== RUN   TestLifecycleFreshReadinessAndCordonFence
+=== RUN   TestLifecycleFreshReadinessAndCordonFence/recovered
+=== RUN   TestLifecycleFreshReadinessAndCordonFence/uncordoned
+--- PASS: TestLifecycleFreshReadinessAndCordonFence (0.09s)
+    --- PASS: TestLifecycleFreshReadinessAndCordonFence/recovered (0.05s)
+    --- PASS: TestLifecycleFreshReadinessAndCordonFence/uncordoned (0.05s)
+=== RUN   TestTerminalPodDeletionMustFinish
+=== RUN   TestTerminalPodDeletionMustFinish/Succeeded/completed
+=== RUN   TestTerminalPodDeletionMustFinish/Succeeded/terminating
+=== RUN   TestTerminalPodDeletionMustFinish/Failed/completed
+=== RUN   TestTerminalPodDeletionMustFinish/Failed/terminating
+--- PASS: TestTerminalPodDeletionMustFinish (0.31s)
+    --- PASS: TestTerminalPodDeletionMustFinish/Succeeded/completed (0.06s)
+    --- PASS: TestTerminalPodDeletionMustFinish/Succeeded/terminating (0.09s)
+    --- PASS: TestTerminalPodDeletionMustFinish/Failed/completed (0.06s)
+    --- PASS: TestTerminalPodDeletionMustFinish/Failed/terminating (0.09s)
+=== RUN   TestLifecycleSettingsFailureStillObservesHealth
+--- PASS: TestLifecycleSettingsFailureStillObservesHealth (0.03s)
+=== RUN   TestLifecycleDeletionCordonCleanup
+=== RUN   TestLifecycleDeletionCordonCleanup/false
+=== RUN   TestLifecycleDeletionCordonCleanup/true
+--- PASS: TestLifecycleDeletionCordonCleanup (0.11s)
+    --- PASS: TestLifecycleDeletionCordonCleanup/false (0.05s)
+    --- PASS: TestLifecycleDeletionCordonCleanup/true (0.06s)
+=== RUN   TestSettingsFreshNodeReads
+=== RUN   TestSettingsFreshNodeReads/membership_changed
+=== RUN   TestSettingsFreshNodeReads/deleted
+=== RUN   TestSettingsFreshNodeReads/replaced_UID
+--- PASS: TestSettingsFreshNodeReads (0.07s)
+    --- PASS: TestSettingsFreshNodeReads/membership_changed (0.03s)
+    --- PASS: TestSettingsFreshNodeReads/deleted (0.02s)
+    --- PASS: TestSettingsFreshNodeReads/replaced_UID (0.02s)
+=== RUN   TestProtectedEmptySettingsStayVisible
+=== RUN   TestProtectedEmptySettingsStayVisible/Ignore
+=== RUN   TestProtectedEmptySettingsStayVisible/Cordon
+=== RUN   TestProtectedEmptySettingsStayVisible/Remove
+--- PASS: TestProtectedEmptySettingsStayVisible (0.09s)
+    --- PASS: TestProtectedEmptySettingsStayVisible/Ignore (0.03s)
+    --- PASS: TestProtectedEmptySettingsStayVisible/Cordon (0.03s)
+    --- PASS: TestProtectedEmptySettingsStayVisible/Remove (0.03s)
+=== RUN   TestSettingsDeletionRetryAndFinalizerRemovalConflict
+--- PASS: TestSettingsDeletionRetryAndFinalizerRemovalConflict (0.04s)
+=== RUN   TestMemberActionFailureAllowsOtherEviction
+--- PASS: TestMemberActionFailureAllowsOtherEviction (0.08s)
+=== RUN   TestObserveNode
+=== RUN   TestObserveNode/ready_has_no_timer
+=== RUN   TestObserveNode/false_starts_first_timer
+=== RUN   TestObserveNode/unknown_is_unready
+=== RUN   TestObserveNode/missing_Ready_is_unready
+=== RUN   TestObserveNode/same_UID_preserves_timer
+=== RUN   TestObserveNode/recovered_Ready_clears_timer
+=== RUN   TestObserveNode/same_name_new_UID_resets_timer
+--- PASS: TestObserveNode (0.00s)
+    --- PASS: TestObserveNode/ready_has_no_timer (0.00s)
+    --- PASS: TestObserveNode/false_starts_first_timer (0.00s)
+    --- PASS: TestObserveNode/unknown_is_unready (0.00s)
+    --- PASS: TestObserveNode/missing_Ready_is_unready (0.00s)
+    --- PASS: TestObserveNode/same_UID_preserves_timer (0.00s)
+    --- PASS: TestObserveNode/recovered_Ready_clears_timer (0.00s)
+    --- PASS: TestObserveNode/same_name_new_UID_resets_timer (0.00s)
+=== RUN   TestScenarioPendingCleanupSurvivesRetries
+=== RUN   TestScenarioPendingCleanupSurvivesRetries/live_repair
+=== RUN   TestScenarioPendingCleanupSurvivesRetries/repair_during_deletion
+--- PASS: TestScenarioPendingCleanupSurvivesRetries (0.11s)
+    --- PASS: TestScenarioPendingCleanupSurvivesRetries/live_repair (0.04s)
+    --- PASS: TestScenarioPendingCleanupSurvivesRetries/repair_during_deletion (0.06s)
+=== RUN   TestScenarioReadinessWaitRetainsRemovalBudget
+=== RUN   TestScenarioReadinessWaitRetainsRemovalBudget/changed_transition
+=== RUN   TestScenarioReadinessWaitRetainsRemovalBudget/future_transition
+--- PASS: TestScenarioReadinessWaitRetainsRemovalBudget (0.26s)
+    --- PASS: TestScenarioReadinessWaitRetainsRemovalBudget/changed_transition (0.12s)
+    --- PASS: TestScenarioReadinessWaitRetainsRemovalBudget/future_transition (0.14s)
+=== RUN   TestSettingsDeletionWithoutOurFinalizer
+--- PASS: TestSettingsDeletionWithoutOurFinalizer (0.01s)
+=== RUN   TestSettingsDeletionUnreadableOwnership
+=== RUN   TestSettingsDeletionUnreadableOwnership/Ready_member
+=== RUN   TestSettingsDeletionUnreadableOwnership/NotReady_member
+=== RUN   TestSettingsDeletionUnreadableOwnership/unrelated_Ready_Node
+--- PASS: TestSettingsDeletionUnreadableOwnership (0.08s)
+    --- PASS: TestSettingsDeletionUnreadableOwnership/Ready_member (0.02s)
+    --- PASS: TestSettingsDeletionUnreadableOwnership/NotReady_member (0.03s)
+    --- PASS: TestSettingsDeletionUnreadableOwnership/unrelated_Ready_Node (0.03s)
+=== RUN   TestPlanNodeSettings
+=== RUN   TestPlanNodeSettings/no_changes
+=== RUN   TestPlanNodeSettings/apply
+=== RUN   TestPlanNodeSettings/matching_preexisting_remains_unowned
+=== RUN   TestPlanNodeSettings/cleanup_owned
+=== RUN   TestPlanNodeSettings/remove_owned_taint_only
+=== RUN   TestPlanNodeSettings/update_owned
+=== RUN   TestPlanNodeSettings/reapply_missing_owned_fields
+=== RUN   TestPlanNodeSettings/cleanup_missing_owned_fields
+=== RUN   TestPlanNodeSettings/external_changes_survive_cleanup
+=== RUN   TestPlanNodeSettings/external_label_change_conflicts
+=== RUN   TestPlanNodeSettings/external_taint_change_conflicts
+=== RUN   TestPlanNodeSettings/foreign_label_conflicts
+=== RUN   TestPlanNodeSettings/foreign_taint_conflicts_after_label_planning
+=== RUN   TestPlanNodeSettings/effect_distinguishes_identity
+=== RUN   TestPlanNodeSettings/preserve_existing_order
+=== RUN   TestPlanNodeSettings/unchanged_record_preserves_bytes
+=== RUN   TestPlanNodeSettings/empty_owner_removed
+=== RUN   TestPlanNodeSettings/timestamped_foreign_match_stays_unowned
+=== RUN   TestPlanNodeSettings/owned_timestamp_change_survives_cleanup
+=== RUN   TestPlanNodeSettings/owned_timestamp_change_conflicts
+=== RUN   TestPlanNodeSettings/foreign_UID
+=== RUN   TestPlanNodeSettings/missing_UID
+=== RUN   TestPlanNodeSettings/malformed_JSON
+=== RUN   TestPlanNodeSettings/null_JSON
+=== RUN   TestPlanNodeSettings/duplicate_JSON_key
+=== RUN   TestPlanNodeSettings/duplicate_nested_JSON_key
+=== RUN   TestPlanNodeSettings/unknown_JSON_field
+=== RUN   TestPlanNodeSettings/trailing_JSON
+=== RUN   TestPlanNodeSettings/reserved_ownership
+=== RUN   TestPlanNodeSettings/reserved_desired_label
+=== RUN   TestPlanNodeSettings/invalid_label_key
+=== RUN   TestPlanNodeSettings/invalid_label_value
+=== RUN   TestPlanNodeSettings/invalid_taint_key
+=== RUN   TestPlanNodeSettings/invalid_taint_value
+=== RUN   TestPlanNodeSettings/invalid_taint_effect
+=== RUN   TestPlanNodeSettings/duplicate_desired_taint
+=== RUN   TestPlanNodeSettings/duplicate_recorded_taint
+=== RUN   TestPlanNodeSettings/duplicate_existing_taint
+=== RUN   TestPlanNodeSettings/desired_timestamp_rejected
+=== RUN   TestPlanNodeSettings/recorded_timestamp_rejected
+=== RUN   TestPlanNodeSettings/nil_node_and_empty_UID
+=== RUN   TestPlanNodeSettings/nil_collections_remain_stable
+--- PASS: TestPlanNodeSettings (0.02s)
+    --- PASS: TestPlanNodeSettings/no_changes (0.00s)
+    --- PASS: TestPlanNodeSettings/apply (0.00s)
+    --- PASS: TestPlanNodeSettings/matching_preexisting_remains_unowned (0.00s)
+    --- PASS: TestPlanNodeSettings/cleanup_owned (0.00s)
+    --- PASS: TestPlanNodeSettings/remove_owned_taint_only (0.00s)
+    --- PASS: TestPlanNodeSettings/update_owned (0.00s)
+    --- PASS: TestPlanNodeSettings/reapply_missing_owned_fields (0.00s)
+    --- PASS: TestPlanNodeSettings/cleanup_missing_owned_fields (0.00s)
+    --- PASS: TestPlanNodeSettings/external_changes_survive_cleanup (0.00s)
+    --- PASS: TestPlanNodeSettings/external_label_change_conflicts (0.00s)
+    --- PASS: TestPlanNodeSettings/external_taint_change_conflicts (0.00s)
+    --- PASS: TestPlanNodeSettings/foreign_label_conflicts (0.00s)
+    --- PASS: TestPlanNodeSettings/foreign_taint_conflicts_after_label_planning (0.00s)
+    --- PASS: TestPlanNodeSettings/effect_distinguishes_identity (0.00s)
+    --- PASS: TestPlanNodeSettings/preserve_existing_order (0.00s)
+    --- PASS: TestPlanNodeSettings/unchanged_record_preserves_bytes (0.00s)
+    --- PASS: TestPlanNodeSettings/empty_owner_removed (0.00s)
+    --- PASS: TestPlanNodeSettings/timestamped_foreign_match_stays_unowned (0.00s)
+    --- PASS: TestPlanNodeSettings/owned_timestamp_change_survives_cleanup (0.00s)
+    --- PASS: TestPlanNodeSettings/owned_timestamp_change_conflicts (0.00s)
+    --- PASS: TestPlanNodeSettings/foreign_UID (0.00s)
+    --- PASS: TestPlanNodeSettings/missing_UID (0.00s)
+    --- PASS: TestPlanNodeSettings/malformed_JSON (0.00s)
+    --- PASS: TestPlanNodeSettings/null_JSON (0.00s)
+    --- PASS: TestPlanNodeSettings/duplicate_JSON_key (0.00s)
+    --- PASS: TestPlanNodeSettings/duplicate_nested_JSON_key (0.00s)
+    --- PASS: TestPlanNodeSettings/unknown_JSON_field (0.00s)
+    --- PASS: TestPlanNodeSettings/trailing_JSON (0.00s)
+    --- PASS: TestPlanNodeSettings/reserved_ownership (0.00s)
+    --- PASS: TestPlanNodeSettings/reserved_desired_label (0.00s)
+    --- PASS: TestPlanNodeSettings/invalid_label_key (0.00s)
+    --- PASS: TestPlanNodeSettings/invalid_label_value (0.00s)
+    --- PASS: TestPlanNodeSettings/invalid_taint_key (0.00s)
+    --- PASS: TestPlanNodeSettings/invalid_taint_value (0.00s)
+    --- PASS: TestPlanNodeSettings/invalid_taint_effect (0.00s)
+    --- PASS: TestPlanNodeSettings/duplicate_desired_taint (0.00s)
+    --- PASS: TestPlanNodeSettings/duplicate_recorded_taint (0.00s)
+    --- PASS: TestPlanNodeSettings/duplicate_existing_taint (0.00s)
+    --- PASS: TestPlanNodeSettings/desired_timestamp_rejected (0.00s)
+    --- PASS: TestPlanNodeSettings/recorded_timestamp_rejected (0.00s)
+    --- PASS: TestPlanNodeSettings/nil_node_and_empty_UID (0.00s)
+    --- PASS: TestPlanNodeSettings/nil_collections_remain_stable (0.00s)
+=== RUN   TestLifecycleReadFailureKeepsReservation
+--- PASS: TestLifecycleReadFailureKeepsReservation (0.06s)
+=== RUN   TestControllers
+Running Suite: Controller Suite - /home/devuser/coupang-nodepool/internal/controller
+====================================================================================
+Random Seed: 1791773871
+
+Will run 21 of 21 specs
+------------------------------
+[BeforeSuite] 
+/home/devuser/coupang-nodepool/internal/controller/suite_test.go:57
+  STEP: bootstrapping test environment @ 10/12/26 02:57:56.064
+  2026-10-12T02:57:56Z	DEBUG	controller-runtime.test-env	starting control plane
+  2026-10-12T02:57:59Z	DEBUG	controller-runtime.test-env	installing CRDs
+  2026-10-12T02:57:59Z	DEBUG	controller-runtime.test-env	reading CRDs from path	{"path": "../../config/crd/bases"}
+  2026-10-12T02:57:59Z	DEBUG	controller-runtime.test-env	read CRDs from file	{"file": "nodes.example.com_nodepools.yaml"}
+  2026-10-12T02:58:00Z	DEBUG	controller-runtime.test-env	installing CRD	{"crd": "nodepools.nodes.example.com"}
+  2026-10-12T02:58:00Z	DEBUG	controller-runtime.test-env	adding API in waitlist	{"GV": "nodes.example.com/v1alpha1"}
+  2026-10-12T02:58:00Z	DEBUG	controller-runtime.test-env	installing webhooks
+[BeforeSuite] PASSED [4.098 seconds]
+------------------------------
+Generated NodePool API contract rejects omitted required fields, invalid types and duplicate taint identities
+/home/devuser/coupang-nodepool/internal/controller/api_contract_envtest_test.go:17
+• [2.072 seconds]
+------------------------------
+Generated NodePool API contract defaults drain timeout and isolates status from spec updates
+/home/devuser/coupang-nodepool/internal/controller/api_contract_envtest_test.go:59
+• [0.027 seconds]
+------------------------------
+NodePool lifecycle against an isolated API server persists Draining and Removing before deleting an empty Node
+/home/devuser/coupang-nodepool/internal/controller/node_lifecycle_envtest_test.go:149
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-rxq8h", "reason": "DrainStarted", "message": "Node lifecycle-worker-d6fpt (3a371bd9-e1e8-4112-ab0e-87c8a1849eba): Draining; "}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-rxq8h", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-rxq8h", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-rxq8h", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-rxq8h", "reason": "NodeCordoned", "message": "Cordoned Node lifecycle-worker-d6fpt"}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-rxq8h", "reason": "NodeCordoned", "message": "Node lifecycle-worker-d6fpt (3a371bd9-e1e8-4112-ab0e-87c8a1849eba): Draining; "}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-rxq8h", "reason": "DrainComplete", "message": "Node lifecycle-worker-d6fpt (3a371bd9-e1e8-4112-ab0e-87c8a1849eba): Removing; "}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-rxq8h", "reason": "NodeDeletionPending", "message": "Node lifecycle-worker-d6fpt (3a371bd9-e1e8-4112-ab0e-87c8a1849eba): Removing; Waiting for Node disappearance"}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-rxq8h", "reason": "NodeRemoved", "message": "Node lifecycle-worker-d6fpt (3a371bd9-e1e8-4112-ab0e-87c8a1849eba) is no longer a member"}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-rxq8h", "reason": "NoMembers", "message": "Ready: No member Nodes were observed"}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-rxq8h", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+• [0.372 seconds]
+------------------------------
+NodePool lifecycle against an isolated API server respects a real PDB rejection and blocks on timeout without force deletion
+/home/devuser/coupang-nodepool/internal/controller/node_lifecycle_envtest_test.go:166
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-7nd6c", "reason": "DrainStarted", "message": "Node lifecycle-worker-6lqmv (ee5cc09c-9ced-45eb-82d3-d36c980c7d0b): Draining; "}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-7nd6c", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-7nd6c", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-7nd6c", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-7nd6c", "reason": "NodeCordoned", "message": "Cordoned Node lifecycle-worker-6lqmv"}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-7nd6c", "reason": "NodeCordoned", "message": "Node lifecycle-worker-6lqmv (ee5cc09c-9ced-45eb-82d3-d36c980c7d0b): Draining; "}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-7nd6c", "reason": "EvictionBlocked", "message": "Node lifecycle-worker-6lqmv (ee5cc09c-9ced-45eb-82d3-d36c980c7d0b): Draining; Eviction refused or throttled; disruption budgets are not bypassed: Cannot evict pod as it would violate the pod's disruption budget."}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-7nd6c", "reason": "Blocked", "message": "Progressing: Lifecycle work is blocked; safety constraints are not bypassed"}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-7nd6c", "reason": "LifecycleBlocked", "message": "Failed: lifecycle-worker-6lqmv: EvictionBlocked: Eviction refused or throttled; disruption budgets are not bypassed: Cannot evict pod as it would violate the pod's disruption budget."}
+  2026-10-12T02:58:02Z	INFO	NodePool transition	{"pool": "lifecycle-pool-7nd6c", "reason": "DrainTimedOut", "message": "Node lifecycle-worker-6lqmv (ee5cc09c-9ced-45eb-82d3-d36c980c7d0b): Draining; 1 Pods still present; no force deletion; resolve blockers or cancel removal"}
+• [0.372 seconds]
+------------------------------
+NodePool lifecycle against an isolated API server honors Pod grace and finalizers when eviction succeeds but no kubelet completes termination
+/home/devuser/coupang-nodepool/internal/controller/node_lifecycle_envtest_test.go:195
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-cckrc", "reason": "DrainStarted", "message": "Node lifecycle-worker-d9nwl (7bd38357-2c9c-4d86-87bf-ff399501809e): Draining; "}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-cckrc", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-cckrc", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-cckrc", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-cckrc", "reason": "NodeCordoned", "message": "Cordoned Node lifecycle-worker-d9nwl"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-cckrc", "reason": "NodeCordoned", "message": "Node lifecycle-worker-d9nwl (7bd38357-2c9c-4d86-87bf-ff399501809e): Draining; "}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-cckrc", "reason": "Evicting", "message": "Node lifecycle-worker-d9nwl (7bd38357-2c9c-4d86-87bf-ff399501809e): Draining; Waiting for Pods to leave the Node"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-cckrc", "reason": "DrainTimedOut", "message": "Node lifecycle-worker-d9nwl (7bd38357-2c9c-4d86-87bf-ff399501809e): Draining; 1 Pods still present; no force deletion; resolve blockers or cancel removal"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-cckrc", "reason": "Blocked", "message": "Progressing: Lifecycle work is blocked; safety constraints are not bypassed"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-cckrc", "reason": "LifecycleBlocked", "message": "Failed: lifecycle-worker-d9nwl: DrainTimedOut: 1 Pods still present; no force deletion; resolve blockers or cancel removal"}
+• [0.309 seconds]
+------------------------------
+NodePool lifecycle against an isolated API server rejects a stale Node deletion and preserves the concurrent edit
+/home/devuser/coupang-nodepool/internal/controller/node_lifecycle_envtest_test.go:214
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-b5xls", "reason": "DrainStarted", "message": "Node lifecycle-worker-kq8bz (5c7ed096-4723-483b-a0c4-3f519900a41d): Draining; "}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-b5xls", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-b5xls", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-b5xls", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-b5xls", "reason": "NodeCordoned", "message": "Cordoned Node lifecycle-worker-kq8bz"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-b5xls", "reason": "NodeCordoned", "message": "Node lifecycle-worker-kq8bz (5c7ed096-4723-483b-a0c4-3f519900a41d): Draining; "}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-b5xls", "reason": "DrainComplete", "message": "Node lifecycle-worker-kq8bz (5c7ed096-4723-483b-a0c4-3f519900a41d): Removing; "}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-b5xls", "reason": "ActionFailed", "message": "Node lifecycle-worker-kq8bz (5c7ed096-4723-483b-a0c4-3f519900a41d): Removing; Operation cannot be fulfilled on Node \"lifecycle-worker-kq8bz\": the ResourceVersion in the precondition (286) does not match the ResourceVersion in record (289). The object might have been modified"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-b5xls", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-b5xls", "reason": "MemberReconcileFailed", "message": "Failed: advance Node \"lifecycle-worker-kq8bz\" (5c7ed096-4723-483b-a0c4-3f519900a41d): Operation cannot be fulfilled on Node \"lifecycle-worker-kq8bz\": the ResourceVersion in the precondition (286) does not match the ResourceVersion in record (289). The object might have been modified"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-b5xls", "reason": "Retrying", "message": "Node lifecycle-worker-kq8bz (5c7ed096-4723-483b-a0c4-3f519900a41d): Removing; "}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-b5xls", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-b5xls", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-b5xls", "reason": "NodeDeletionPending", "message": "Node lifecycle-worker-kq8bz (5c7ed096-4723-483b-a0c4-3f519900a41d): Removing; Waiting for Node disappearance"}
+• [0.401 seconds]
+------------------------------
+NodePool lifecycle against an isolated API server does not delete a same-name replacement Node
+/home/devuser/coupang-nodepool/internal/controller/node_lifecycle_envtest_test.go:232
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-kmrvw", "reason": "DrainStarted", "message": "Node lifecycle-worker-j8rvt (af7ef0fa-c52d-4b21-a6f8-a1ec916c2545): Draining; "}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-kmrvw", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-kmrvw", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-kmrvw", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-kmrvw", "reason": "NodeCordoned", "message": "Cordoned Node lifecycle-worker-j8rvt"}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-kmrvw", "reason": "NodeCordoned", "message": "Node lifecycle-worker-j8rvt (af7ef0fa-c52d-4b21-a6f8-a1ec916c2545): Draining; "}
+  2026-10-12T02:58:03Z	INFO	NodePool transition	{"pool": "lifecycle-pool-kmrvw", "reason": "DrainComplete", "message": "Node lifecycle-worker-j8rvt (af7ef0fa-c52d-4b21-a6f8-a1ec916c2545): Removing; "}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "lifecycle-pool-kmrvw", "reason": "ActionFailed", "message": "Node lifecycle-worker-j8rvt (af7ef0fa-c52d-4b21-a6f8-a1ec916c2545): Removing; Operation cannot be fulfilled on Node \"lifecycle-worker-j8rvt\": the UID in the precondition (af7ef0fa-c52d-4b21-a6f8-a1ec916c2545) does not match the UID in record (e0f3d58b-b889-46fb-ab79-fa259a226c24). The object might have been deleted and then recreated"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "lifecycle-pool-kmrvw", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "lifecycle-pool-kmrvw", "reason": "MemberReconcileFailed", "message": "Failed: advance Node \"lifecycle-worker-j8rvt\" (af7ef0fa-c52d-4b21-a6f8-a1ec916c2545): Operation cannot be fulfilled on Node \"lifecycle-worker-j8rvt\": the UID in the precondition (af7ef0fa-c52d-4b21-a6f8-a1ec916c2545) does not match the UID in record (e0f3d58b-b889-46fb-ab79-fa259a226c24). The object might have been deleted and then recreated"}
+• [0.307 seconds]
+------------------------------
+NodePool lifecycle against an isolated API server rejects invalid policy values through the generated API schema
+/home/devuser/coupang-nodepool/internal/controller/node_lifecycle_envtest_test.go:250
+• [0.036 seconds]
+------------------------------
+Scenario fixes against the real isolated API persists transition metadata and enforces fresh grace after a missed recovery
+/home/devuser/coupang-nodepool/internal/controller/scenario_fixes_envtest_test.go:67
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-dndh4", "reason": "GracePeriod", "message": "Node scenario-node-6zz2n (0af1d92f-23f5-4976-9b01-a31f67e530f6): NotReady; "}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-dndh4", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-dndh4", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-dndh4", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-dndh4", "reason": "CordonPending", "message": "Node scenario-node-6zz2n (0af1d92f-23f5-4976-9b01-a31f67e530f6): NotReady; "}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-dndh4", "reason": "NodeCordoned", "message": "Cordoned Node scenario-node-6zz2n"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-dndh4", "reason": "Cordoned", "message": "Node scenario-node-6zz2n (0af1d92f-23f5-4976-9b01-a31f67e530f6): NotReady; "}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-dndh4", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+• [0.130 seconds]
+------------------------------
+Scenario fixes against the real isolated API persists former-member cleanup through errors and deletion, then clears the repaired failure
+/home/devuser/coupang-nodepool/internal/controller/scenario_fixes_envtest_test.go:86
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-rh294", "reason": "GracePeriod", "message": "Node scenario-node-9fw48 (ca7313ec-b0c1-4b0c-9153-4b74e6763d0d): NotReady; "}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-rh294", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-rh294", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-rh294", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-rh294", "reason": "NodeLeftPool", "message": "Node scenario-node-9fw48 (ca7313ec-b0c1-4b0c-9153-4b74e6763d0d) is no longer a member"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-rh294", "reason": "NoMembers", "message": "Ready: No member Nodes were observed"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-rh294", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-rh294", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"scenario-node-9fw48\" (ca7313ec-b0c1-4b0c-9153-4b74e6763d0d): invalid settings ownership: unexpected end of JSON input"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-rh294", "reason": "ObservationFailed", "message": "Ready: Unable to refresh member health"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-rh294", "reason": "ReconcileFailed", "message": "Progressing: Retrying after a reconciliation error"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-rh294", "reason": "ReconcileFailed", "message": "Failed: synchronize Node \"scenario-node-9fw48\" (ca7313ec-b0c1-4b0c-9153-4b74e6763d0d): invalid settings ownership: unexpected end of JSON input"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-rh294", "reason": "CleanupComplete", "message": "Progressing: Eligible settings and owned cordons have been cleaned"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-rh294", "reason": "CleanupComplete", "message": "Failed: Eligible settings and owned cordons have been cleaned"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "scenario-pool-rh294", "reason": "PoolFinalized", "message": "Eligible settings and cordons cleaned; finalizer released"}
+• [0.228 seconds]
+------------------------------
+Approved design boundaries against the isolated API rejects actual stale eviction preconditions after a same-UID version update
+/home/devuser/coupang-nodepool/internal/controller/design_decisions_envtest_test.go:197
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-9hxx8", "reason": "DrainStarted", "message": "Node design-worker-t86zw (a0c530b6-dbf4-4d45-b90f-3823b854b941): Draining; "}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-9hxx8", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-9hxx8", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-9hxx8", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-9hxx8", "reason": "NodeCordoned", "message": "Cordoned Node design-worker-t86zw"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-9hxx8", "reason": "NodeCordoned", "message": "Node design-worker-t86zw (a0c530b6-dbf4-4d45-b90f-3823b854b941): Draining; "}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-9hxx8", "reason": "ActionFailed", "message": "Node design-worker-t86zw (a0c530b6-dbf4-4d45-b90f-3823b854b941): Draining; Operation cannot be fulfilled on Pod \"workload\": the ResourceVersion in the precondition (350) does not match the ResourceVersion in record (354). The object might have been modified"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-9hxx8", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-9hxx8", "reason": "MemberReconcileFailed", "message": "Failed: advance Node \"design-worker-t86zw\" (a0c530b6-dbf4-4d45-b90f-3823b854b941): Operation cannot be fulfilled on Pod \"workload\": the ResourceVersion in the precondition (350) does not match the ResourceVersion in record (354). The object might have been modified"}
+• [0.226 seconds]
+------------------------------
+Approved design boundaries against the isolated API rejects actual stale eviction preconditions after same-name replacement
+/home/devuser/coupang-nodepool/internal/controller/design_decisions_envtest_test.go:197
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-r5l9c", "reason": "DrainStarted", "message": "Node design-worker-x2nhm (af053a5a-b10b-4905-b84b-c33db07dadba): Draining; "}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-r5l9c", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-r5l9c", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-r5l9c", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-r5l9c", "reason": "NodeCordoned", "message": "Cordoned Node design-worker-x2nhm"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-r5l9c", "reason": "NodeCordoned", "message": "Node design-worker-x2nhm (af053a5a-b10b-4905-b84b-c33db07dadba): Draining; "}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-r5l9c", "reason": "ActionFailed", "message": "Node design-worker-x2nhm (af053a5a-b10b-4905-b84b-c33db07dadba): Draining; Operation cannot be fulfilled on Pod \"workload\": the UID in the precondition (570e7107-3546-4df3-84e3-1cf669161098) does not match the UID in record (2a1dea9c-f31c-45f8-929c-cc6afb5d120f). The object might have been deleted and then recreated"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-r5l9c", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-r5l9c", "reason": "MemberReconcileFailed", "message": "Failed: advance Node \"design-worker-x2nhm\" (af053a5a-b10b-4905-b84b-c33db07dadba): Operation cannot be fulfilled on Pod \"workload\": the UID in the precondition (570e7107-3546-4df3-84e3-1cf669161098) does not match the UID in record (2a1dea9c-f31c-45f8-929c-cc6afb5d120f). The object might have been deleted and then recreated"}
+• [0.225 seconds]
+------------------------------
+Approved design boundaries against the isolated API rejects a settings patch when a role appears after its fresh read
+/home/devuser/coupang-nodepool/internal/controller/design_decisions_envtest_test.go:199
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-nn6g5", "reason": "ProtectedNode", "message": "Node design-worker-26t7w (3adf8960-ff22-4821-831d-7f37bfde8063): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-nn6g5", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-nn6g5", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:04Z	INFO	NodePool transition	{"pool": "design-pool-nn6g5", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"design-worker-26t7w\" (3adf8960-ff22-4821-831d-7f37bfde8063): Operation cannot be fulfilled on nodes \"design-worker-26t7w\": the object has been modified; please apply your changes to the latest version and try again"}
+• [0.155 seconds]
+------------------------------
+Approved design boundaries against the isolated API allows only one competing status reservation before disruption
+/home/devuser/coupang-nodepool/internal/controller/design_decisions_envtest_test.go:223
+  2026-10-12T02:58:05Z	INFO	NodePool transition	{"pool": "design-pool-7672m", "reason": "DrainStarted", "message": "Node design-other-66nx8 (3c4b528e-e4c7-42f6-8605-d6884ee65154): Draining; "}
+  2026-10-12T02:58:05Z	INFO	NodePool transition	{"pool": "design-pool-7672m", "reason": "WaitingForRemovalSlot", "message": "Node design-worker-rlmjx (3008d7c6-66ed-4b75-b3b4-e43697744827): NotReady; "}
+  2026-10-12T02:58:05Z	INFO	NodePool transition	{"pool": "design-pool-7672m", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:05Z	INFO	NodePool transition	{"pool": "design-pool-7672m", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:05Z	INFO	NodePool transition	{"pool": "design-pool-7672m", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:05Z	INFO	NodePool transition	{"pool": "design-pool-7672m", "reason": "NodeCordoned", "message": "Cordoned Node design-other-66nx8"}
+  2026-10-12T02:58:05Z	INFO	NodePool transition	{"pool": "design-pool-7672m", "reason": "NodeCordoned", "message": "Node design-other-66nx8 (3c4b528e-e4c7-42f6-8605-d6884ee65154): Draining; "}
+• [0.102 seconds]
+------------------------------
+Approved design boundaries against the isolated API observes Node and Pod events before the polling fallback
+/home/devuser/coupang-nodepool/internal/controller/design_decisions_envtest_test.go:269
+  2026-10-12T02:58:05Z	INFO	Starting EventSource	{"controller": "nodepool", "controllerGroup": "nodes.example.com", "controllerKind": "NodePool", "source": "kind source: *v1alpha1.NodePool"}
+  2026-10-12T02:58:05Z	INFO	Starting EventSource	{"controller": "nodepool", "controllerGroup": "nodes.example.com", "controllerKind": "NodePool", "source": "kind source: *v1.Node"}
+  2026-10-12T02:58:05Z	INFO	Starting EventSource	{"controller": "nodepool", "controllerGroup": "nodes.example.com", "controllerKind": "NodePool", "source": "kind source: *v1.Pod"}
+  2026-10-12T02:58:05Z	INFO	Starting Controller	{"controller": "nodepool", "controllerGroup": "nodes.example.com", "controllerKind": "NodePool"}
+  2026-10-12T02:58:05Z	INFO	Starting workers	{"controller": "nodepool", "controllerGroup": "nodes.example.com", "controllerKind": "NodePool", "worker count": 1}
+  2026-10-12T02:58:05Z	INFO	NodePool transition	{"controller": "nodepool", "controllerGroup": "nodes.example.com", "controllerKind": "NodePool", "NodePool": {"name":"design-pool-rb8t8"}, "namespace": "", "name": "design-pool-rb8t8", "reconcileID": "67a39c48-11f2-4e04-9c22-63ae74ea3dfb", "pool": "design-pool-rb8t8", "reason": "PolicyIgnored", "message": "Node design-worker-8kxpf (0e625788-f7ad-4a25-ad97-79ae73a6bd93): NotReady; "}
+  2026-10-12T02:58:05Z	INFO	NodePool transition	{"controller": "nodepool", "controllerGroup": "nodes.example.com", "controllerKind": "NodePool", "NodePool": {"name":"design-pool-rb8t8"}, "namespace": "", "name": "design-pool-rb8t8", "reconcileID": "67a39c48-11f2-4e04-9c22-63ae74ea3dfb", "pool": "design-pool-rb8t8", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:05Z	INFO	NodePool transition	{"controller": "nodepool", "controllerGroup": "nodes.example.com", "controllerKind": "NodePool", "NodePool": {"name":"design-pool-rb8t8"}, "namespace": "", "name": "design-pool-rb8t8", "reconcileID": "67a39c48-11f2-4e04-9c22-63ae74ea3dfb", "pool": "design-pool-rb8t8", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+  2026-10-12T02:58:05Z	INFO	NodePool transition	{"controller": "nodepool", "controllerGroup": "nodes.example.com", "controllerKind": "NodePool", "NodePool": {"name":"design-pool-rb8t8"}, "namespace": "", "name": "design-pool-rb8t8", "reconcileID": "67a39c48-11f2-4e04-9c22-63ae74ea3dfb", "pool": "design-pool-rb8t8", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:07Z	INFO	NodePool transition	{"controller": "nodepool", "controllerGroup": "nodes.example.com", "controllerKind": "NodePool", "NodePool": {"name":"design-pool-rb8t8"}, "namespace": "", "name": "design-pool-rb8t8", "reconcileID": "63f78fa1-d1d1-4327-8216-140473b5c263", "pool": "design-pool-rb8t8", "reason": "NodeReady", "message": "Node design-worker-8kxpf (0e625788-f7ad-4a25-ad97-79ae73a6bd93): Ready; "}
+  2026-10-12T02:58:07Z	INFO	NodePool transition	{"controller": "nodepool", "controllerGroup": "nodes.example.com", "controllerKind": "NodePool", "NodePool": {"name":"design-pool-rb8t8"}, "namespace": "", "name": "design-pool-rb8t8", "reconcileID": "63f78fa1-d1d1-4327-8216-140473b5c263", "pool": "design-pool-rb8t8", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:13Z	INFO	NodePool transition	{"controller": "nodepool", "controllerGroup": "nodes.example.com", "controllerKind": "NodePool", "NodePool": {"name":"design-pool-rb8t8"}, "namespace": "", "name": "design-pool-rb8t8", "reconcileID": "b4b8e0ea-53be-415e-9d69-e3b34acbe673", "pool": "design-pool-rb8t8", "reason": "NodeLeftPool", "message": "Node design-worker-8kxpf (0e625788-f7ad-4a25-ad97-79ae73a6bd93) is no longer a member"}
+  2026-10-12T02:58:13Z	INFO	NodePool transition	{"controller": "nodepool", "controllerGroup": "nodes.example.com", "controllerKind": "NodePool", "NodePool": {"name":"design-pool-rb8t8"}, "namespace": "", "name": "design-pool-rb8t8", "reconcileID": "b4b8e0ea-53be-415e-9d69-e3b34acbe673", "pool": "design-pool-rb8t8", "reason": "NoMembers", "message": "Ready: No member Nodes were observed"}
+  2026-10-12T02:58:13Z	INFO	Stopping and waiting for non leader election runnables
+  2026-10-12T02:58:13Z	INFO	Stopping and waiting for warmup runnables
+  2026-10-12T02:58:13Z	INFO	Stopping and waiting for leader election runnables
+  2026-10-12T02:58:13Z	INFO	Shutdown signal received, waiting for all workers to finish	{"controller": "nodepool", "controllerGroup": "nodes.example.com", "controllerKind": "NodePool"}
+  2026-10-12T02:58:13Z	INFO	All workers finished	{"controller": "nodepool", "controllerGroup": "nodes.example.com", "controllerKind": "NodePool"}
+  2026-10-12T02:58:13Z	INFO	Stopping and waiting for caches
+  2026-10-12T02:58:13Z	INFO	Stopping and waiting for webhooks
+  2026-10-12T02:58:13Z	INFO	Stopping and waiting for HTTP servers
+  2026-10-12T02:58:13Z	INFO	Wait completed, proceeding to shutdown the manager
+• [8.559 seconds]
+------------------------------
+NodePool settings reconciliation against envtest persists the finalizer before settings and avoids unchanged writes
+/home/devuser/coupang-nodepool/internal/controller/nodepool_controller_test.go:107
+  2026-10-12T02:58:13Z	INFO	NodePool transition	{"pool": "settings-pool-6xm2b", "reason": "NodeReady", "message": "Node settings-worker-zrf55 (7b8ca37b-850c-4cbc-b097-0d4e65a53c39): Ready; "}
+  2026-10-12T02:58:13Z	INFO	NodePool transition	{"pool": "settings-pool-6xm2b", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:13Z	INFO	NodePool transition	{"pool": "settings-pool-6xm2b", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+  2026-10-12T02:58:13Z	INFO	NodePool transition	{"pool": "settings-pool-6xm2b", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+• [0.227 seconds]
+------------------------------
+NodePool settings reconciliation against envtest propagates spec changes to a NotReady member
+/home/devuser/coupang-nodepool/internal/controller/nodepool_controller_test.go:129
+  2026-10-12T02:58:13Z	INFO	NodePool transition	{"pool": "settings-pool-r8wnx", "reason": "NodeReady", "message": "Node settings-worker-56cct (fa82a5d4-c4a1-4cc3-b15e-9a7c9fb91561): Ready; "}
+  2026-10-12T02:58:13Z	INFO	NodePool transition	{"pool": "settings-pool-r8wnx", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:13Z	INFO	NodePool transition	{"pool": "settings-pool-r8wnx", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+  2026-10-12T02:58:13Z	INFO	NodePool transition	{"pool": "settings-pool-r8wnx", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-r8wnx", "reason": "PolicyIgnored", "message": "Node settings-worker-56cct (fa82a5d4-c4a1-4cc3-b15e-9a7c9fb91561): NotReady; "}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-r8wnx", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+• [0.193 seconds]
+------------------------------
+NodePool settings reconciliation against envtest cleans owned settings when a Node leaves membership
+/home/devuser/coupang-nodepool/internal/controller/nodepool_controller_test.go:151
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-l7kv7", "reason": "NodeReady", "message": "Node settings-worker-kwv7b (f52b6c6e-ed06-42a1-ac76-f73d8bf793f4): Ready; "}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-l7kv7", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-l7kv7", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-l7kv7", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-l7kv7", "reason": "NodeLeftPool", "message": "Node settings-worker-kwv7b (f52b6c6e-ed06-42a1-ac76-f73d8bf793f4) is no longer a member"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-l7kv7", "reason": "NoMembers", "message": "Ready: No member Nodes were observed"}
+• [0.131 seconds]
+------------------------------
+NodePool settings reconciliation against envtest cleans a Ready owned Node before allowing pool deletion
+/home/devuser/coupang-nodepool/internal/controller/nodepool_controller_test.go:164
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-5mcvw", "reason": "NodeReady", "message": "Node settings-worker-p4qqh (89a3dca9-d98f-4878-8c5e-66925a8c2836): Ready; "}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-5mcvw", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-5mcvw", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-5mcvw", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-5mcvw", "reason": "CleanupComplete", "message": "Progressing: Eligible settings and owned cordons have been cleaned"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-5mcvw", "reason": "CleanupComplete", "message": "Failed: Eligible settings and owned cordons have been cleaned"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-5mcvw", "reason": "PoolFinalized", "message": "Eligible settings and cordons cleaned; finalizer released"}
+• [0.171 seconds]
+------------------------------
+NodePool settings reconciliation against envtest leaves NotReady ownership intact when finalizing pool deletion
+/home/devuser/coupang-nodepool/internal/controller/nodepool_controller_test.go:177
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-2rvbv", "reason": "NodeReady", "message": "Node settings-worker-7xtnf (e07fb14f-390b-409f-8f05-e9769e2bc803): Ready; "}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-2rvbv", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-2rvbv", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-2rvbv", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-2rvbv", "reason": "CleanupComplete", "message": "Progressing: Eligible settings and owned cordons have been cleaned"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-2rvbv", "reason": "CleanupComplete", "message": "Failed: Eligible settings and owned cordons have been cleaned"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-2rvbv", "reason": "PoolFinalized", "message": "Eligible settings and cordons cleaned; finalizer released"}
+• [0.190 seconds]
+------------------------------
+NodePool settings reconciliation against envtest rejects a stale Node patch and preserves the concurrent actor on retry
+/home/devuser/coupang-nodepool/internal/controller/nodepool_controller_test.go:192
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-jlrmz", "reason": "SettingsFailed", "message": "Node settings-worker-w9fjr (8acf63db-064f-49db-a8b2-62d9380e61fd): Ready; synchronize Node \"settings-worker-w9fjr\" (8acf63db-064f-49db-a8b2-62d9380e61fd): Operation cannot be fulfilled on nodes \"settings-worker-w9fjr\": the object has been modified; please apply your changes to the latest version and try again"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-jlrmz", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-jlrmz", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-jlrmz", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"settings-worker-w9fjr\" (8acf63db-064f-49db-a8b2-62d9380e61fd): Operation cannot be fulfilled on nodes \"settings-worker-w9fjr\": the object has been modified; please apply your changes to the latest version and try again"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-jlrmz", "reason": "NodeReady", "message": "Node settings-worker-w9fjr (8acf63db-064f-49db-a8b2-62d9380e61fd): Ready; "}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-jlrmz", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+  2026-10-12T02:58:14Z	INFO	NodePool transition	{"pool": "settings-pool-jlrmz", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+• [0.220 seconds]
+------------------------------
+[AfterSuite] 
+/home/devuser/coupang-nodepool/internal/controller/suite_test.go:87
+  STEP: tearing down the test environment @ 10/12/26 02:58:14.826
+[AfterSuite] PASSED [1.141 seconds]
+------------------------------
+
+Ran 21 of 21 Specs in 19.906 seconds
+SUCCESS! -- 21 Passed | 0 Failed | 0 Pending | 0 Skipped
+--- PASS: TestControllers (19.91s)
+=== RUN   TestLifecycleLatePodsAndMembershipLeave
+=== RUN   TestLifecycleLatePodsAndMembershipLeave/late_Pod
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainComplete", "message": "Node worker-0 (worker-0-uid): Removing; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "PodsAppeared", "message": "Node worker-0 (worker-0-uid): Draining; Pods appeared after draining; Node deletion is postponed"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Lifecycle work is blocked; safety constraints are not bypassed"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "LifecycleBlocked", "message": "Failed: worker-0: PodsAppeared: Pods appeared after draining; Node deletion is postponed"}
+=== RUN   TestLifecycleLatePodsAndMembershipLeave/membership_leave
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainComplete", "message": "Node worker-0 (worker-0-uid): Removing; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "CordonReleased", "message": "Released owned cordon on Node worker-0"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeLeftPool", "message": "Node worker-0 (worker-0-uid) is no longer a member"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoMembers", "message": "Ready: No member Nodes were observed"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+--- PASS: TestLifecycleLatePodsAndMembershipLeave (0.13s)
+    --- PASS: TestLifecycleLatePodsAndMembershipLeave/late_Pod (0.07s)
+    --- PASS: TestLifecycleLatePodsAndMembershipLeave/membership_leave (0.06s)
+=== RUN   TestActiveMemberFailureRetainsSlotAndRecovers
+=== RUN   TestActiveMemberFailureRetainsSlotAndRecovers/settings
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "WaitingForRemovalSlot", "message": "Node worker-1 (worker-1-uid): NotReady; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "SettingsFailed", "message": "Node worker-0 (worker-0-uid): Draining; synchronize Node \"worker-0\" (worker-0-uid): invalid settings ownership: unexpected end of JSON input"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"worker-0\" (worker-0-uid): invalid settings ownership: unexpected end of JSON input"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Retrying", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Evicting", "message": "Node worker-0 (worker-0-uid): Draining; Waiting for Pods to leave the Node"}
+=== RUN   TestActiveMemberFailureRetainsSlotAndRecovers/protected
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "WaitingForRemovalSlot", "message": "Node worker-1 (worker-1-uid): NotReady; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node worker-0 (worker-0-uid): Draining; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: clean up Node \"worker-0\" (worker-0-uid) cordon: protected Node \"worker-0\" requires Ready=True before owned cordon cleanup"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Retrying", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Evicting", "message": "Node worker-0 (worker-0-uid): Draining; Waiting for Pods to leave the Node"}
+--- PASS: TestActiveMemberFailureRetainsSlotAndRecovers (0.16s)
+    --- PASS: TestActiveMemberFailureRetainsSlotAndRecovers/settings (0.08s)
+    --- PASS: TestActiveMemberFailureRetainsSlotAndRecovers/protected (0.08s)
+=== RUN   TestSettingsOwnershipConflicts
+=== RUN   TestSettingsOwnershipConflicts/foreign_UID
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "SettingsFailed", "message": "Node worker (worker-uid): Ready; synchronize Node \"worker\" (worker-uid): ownership annotation has a different or missing pool UID"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"worker\" (worker-uid): ownership annotation has a different or missing pool UID"}
+=== RUN   TestSettingsOwnershipConflicts/malformed
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "SettingsFailed", "message": "Node worker (worker-uid): Ready; synchronize Node \"worker\" (worker-uid): invalid settings ownership: unexpected end of JSON input"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"worker\" (worker-uid): invalid settings ownership: unexpected end of JSON input"}
+=== RUN   TestSettingsOwnershipConflicts/external_change
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "SettingsFailed", "message": "Node worker (worker-uid): Ready; synchronize Node \"worker\" (worker-uid): owned label \"workload\" changed externally"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"worker\" (worker-uid): owned label \"workload\" changed externally"}
+=== RUN   TestSettingsOwnershipConflicts/known_former_malformed
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeLeftPool", "message": "Node worker (worker-uid) is no longer a member"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoMembers", "message": "Ready: No member Nodes were observed"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"worker\" (worker-uid): invalid settings ownership: unexpected end of JSON input"}
+--- PASS: TestSettingsOwnershipConflicts (0.09s)
+    --- PASS: TestSettingsOwnershipConflicts/foreign_UID (0.02s)
+    --- PASS: TestSettingsOwnershipConflicts/malformed (0.02s)
+    --- PASS: TestSettingsOwnershipConflicts/external_change (0.03s)
+    --- PASS: TestSettingsOwnershipConflicts/known_former_malformed (0.02s)
+=== RUN   TestFreshProtectedRoleAndNodeReadIsolation
+=== RUN   TestFreshProtectedRoleAndNodeReadIsolation/role_appeared
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-worker (a-worker-uid): Ready; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-worker\" (a-worker-uid): protected Node \"a-worker\" cannot receive NodePool desired settings"}
+=== RUN   TestFreshProtectedRoleAndNodeReadIsolation/read_forbidden
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "SettingsFailed", "message": "Node a-worker (a-worker-uid): Ready; read Node \"a-worker\" (a-worker-uid): nodes \"a-worker\" is forbidden: read denied"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: read Node \"a-worker\" (a-worker-uid): nodes \"a-worker\" is forbidden: read denied"}
+--- PASS: TestFreshProtectedRoleAndNodeReadIsolation (0.06s)
+    --- PASS: TestFreshProtectedRoleAndNodeReadIsolation/role_appeared (0.03s)
+    --- PASS: TestFreshProtectedRoleAndNodeReadIsolation/read_forbidden (0.03s)
+=== RUN   TestLifecycleRecoversFromCommittedWriteLostResponse
+=== RUN   TestLifecycleRecoversFromCommittedWriteLostResponse/reservation
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Evicting", "message": "Node worker-0 (worker-0-uid): Draining; Waiting for Pods to leave the Node"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainComplete", "message": "Node worker-0 (worker-0-uid): Removing; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeDeletionPending", "message": "Node worker-0 (worker-0-uid): Removing; Waiting for Node disappearance"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeRemoved", "message": "Node worker-0 (worker-0-uid) is no longer a member"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoMembers", "message": "Ready: No member Nodes were observed"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+=== RUN   TestLifecycleRecoversFromCommittedWriteLostResponse/cordon
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "ActionFailed", "message": "Node worker-0 (worker-0-uid): Draining; test: write committed, response lost"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: advance Node \"worker-0\" (worker-0-uid): test: write committed, response lost"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Retrying", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Evicting", "message": "Node worker-0 (worker-0-uid): Draining; Waiting for Pods to leave the Node"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainComplete", "message": "Node worker-0 (worker-0-uid): Removing; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeDeletionPending", "message": "Node worker-0 (worker-0-uid): Removing; Waiting for Node disappearance"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeRemoved", "message": "Node worker-0 (worker-0-uid) is no longer a member"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoMembers", "message": "Ready: No member Nodes were observed"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+=== RUN   TestLifecycleRecoversFromCommittedWriteLostResponse/eviction
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "ActionFailed", "message": "Node worker-0 (worker-0-uid): Draining; test: write committed, response lost"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: advance Node \"worker-0\" (worker-0-uid): test: write committed, response lost"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Retrying", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainComplete", "message": "Node worker-0 (worker-0-uid): Removing; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeDeletionPending", "message": "Node worker-0 (worker-0-uid): Removing; Waiting for Node disappearance"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeRemoved", "message": "Node worker-0 (worker-0-uid) is no longer a member"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoMembers", "message": "Ready: No member Nodes were observed"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+=== RUN   TestLifecycleRecoversFromCommittedWriteLostResponse/removing
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Evicting", "message": "Node worker-0 (worker-0-uid): Draining; Waiting for Pods to leave the Node"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeDeletionPending", "message": "Node worker-0 (worker-0-uid): Removing; Waiting for Node disappearance"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeRemoved", "message": "Node worker-0 (worker-0-uid) is no longer a member"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoMembers", "message": "Ready: No member Nodes were observed"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+=== RUN   TestLifecycleRecoversFromCommittedWriteLostResponse/node-delete
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Evicting", "message": "Node worker-0 (worker-0-uid): Draining; Waiting for Pods to leave the Node"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainComplete", "message": "Node worker-0 (worker-0-uid): Removing; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "ActionFailed", "message": "Node worker-0 (worker-0-uid): Removing; test: write committed, response lost"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: advance Node \"worker-0\" (worker-0-uid): test: write committed, response lost"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeRemoved", "message": "Node worker-0 (worker-0-uid) is no longer a member"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoMembers", "message": "Ready: No member Nodes were observed"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+--- PASS: TestLifecycleRecoversFromCommittedWriteLostResponse (0.41s)
+    --- PASS: TestLifecycleRecoversFromCommittedWriteLostResponse/reservation (0.07s)
+    --- PASS: TestLifecycleRecoversFromCommittedWriteLostResponse/cordon (0.09s)
+    --- PASS: TestLifecycleRecoversFromCommittedWriteLostResponse/eviction (0.09s)
+    --- PASS: TestLifecycleRecoversFromCommittedWriteLostResponse/removing (0.08s)
+    --- PASS: TestLifecycleRecoversFromCommittedWriteLostResponse/node-delete (0.08s)
+=== RUN   TestLifecyclePoolChangeFence
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+--- PASS: TestLifecyclePoolChangeFence (0.03s)
+=== RUN   TestProtectedPolicyCancellationDoesNotRenewRemoval
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node worker-0 (worker-0-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: clean up Node \"worker-0\" (worker-0-uid) cordon: protected Node \"worker-0\" requires Ready=True before owned cordon cleanup"}
+--- PASS: TestProtectedPolicyCancellationDoesNotRenewRemoval (0.05s)
+=== RUN   TestLifecycleEvictionErrorsAreReported
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:16Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "ActionFailed", "message": "Node worker-0 (worker-0-uid): Draining; pods/eviction \"job\" is forbidden: denied"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: advance Node \"worker-0\" (worker-0-uid): pods/eviction \"job\" is forbidden: denied"}
+--- PASS: TestLifecycleEvictionErrorsAreReported (0.07s)
+=== RUN   TestScenarioFreshTransitionFencesEviction
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "ActionFailed", "message": "Node worker-0 (worker-0-uid): Draining; Node no longer qualifies for lifecycle action"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: advance Node \"worker-0\" (worker-0-uid): Node no longer qualifies for lifecycle action"}
+--- PASS: TestScenarioFreshTransitionFencesEviction (0.05s)
+=== RUN   TestSharedErrorUnwrapAndDeterministicMemberErrors
+--- PASS: TestSharedErrorUnwrapAndDeterministicMemberErrors (0.00s)
+=== RUN   TestSettingsApplyRegardlessOfReadiness
+=== RUN   TestSettingsApplyRegardlessOfReadiness/True
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node worker (worker-uid): Ready; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+=== RUN   TestSettingsApplyRegardlessOfReadiness/False
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "PolicyIgnored", "message": "Node worker (worker-uid): NotReady; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+=== RUN   TestSettingsApplyRegardlessOfReadiness/Unknown
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "PolicyIgnored", "message": "Node worker (worker-uid): NotReady; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+=== RUN   TestSettingsApplyRegardlessOfReadiness/#00
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "PolicyIgnored", "message": "Node worker (worker-uid): NotReady; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+--- PASS: TestSettingsApplyRegardlessOfReadiness (0.13s)
+    --- PASS: TestSettingsApplyRegardlessOfReadiness/True (0.04s)
+    --- PASS: TestSettingsApplyRegardlessOfReadiness/False (0.03s)
+    --- PASS: TestSettingsApplyRegardlessOfReadiness/Unknown (0.03s)
+    --- PASS: TestSettingsApplyRegardlessOfReadiness/#00 (0.03s)
+=== RUN   TestScenarioPendingCleanupDoesNotClaimReplacement
+  2026-10-12T02:58:17Z	INFO	Skipping unrelated Node with unreadable settings ownership	{"node": "worker", "error": "invalid settings ownership: unexpected end of JSON input"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoMembers", "message": "Ready: No member Nodes were observed"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+--- PASS: TestScenarioPendingCleanupDoesNotClaimReplacement (0.02s)
+=== RUN   TestMemberFailureDoesNotAcquireNewSlot
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "SettingsFailed", "message": "Node worker-0 (worker-0-uid): NotReady; synchronize Node \"worker-0\" (worker-0-uid): invalid settings ownership: unexpected end of JSON input"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-1 (worker-1-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"worker-0\" (worker-0-uid): invalid settings ownership: unexpected end of JSON input"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-1"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-1 (worker-1-uid): Draining; "}
+--- PASS: TestMemberFailureDoesNotAcquireNewSlot (0.04s)
+=== RUN   TestSettingsReaderFailures
+=== RUN   TestSettingsReaderFailures/missing_APIReader
+=== RUN   TestSettingsReaderFailures/list_failed
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "ObservationFailed", "message": "Ready: Unable to refresh member health"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "ReconcileFailed", "message": "Progressing: Retrying after a reconciliation error"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "ReconcileFailed", "message": "Failed: list Nodes for settings synchronization: API unavailable\nAPI unavailable"}
+--- PASS: TestSettingsReaderFailures (0.03s)
+    --- PASS: TestSettingsReaderFailures/missing_APIReader (0.01s)
+    --- PASS: TestSettingsReaderFailures/list_failed (0.02s)
+=== RUN   TestLifecycleCancellation
+=== RUN   TestLifecycleCancellation/Ignore
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "CordonReleased", "message": "Released owned cordon on Node worker-0"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "PolicyIgnored", "message": "Node worker-0 (worker-0-uid): NotReady; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+=== RUN   TestLifecycleCancellation/Cordon
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Cordoned", "message": "Node worker-0 (worker-0-uid): NotReady; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+=== RUN   TestLifecycleCancellation/leave
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "CordonReleased", "message": "Released owned cordon on Node worker-0"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeLeftPool", "message": "Node worker-0 (worker-0-uid) is no longer a member"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoMembers", "message": "Ready: No member Nodes were observed"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+=== RUN   TestLifecycleCancellation/recover
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "CordonReleased", "message": "Released owned cordon on Node worker-0"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node worker-0 (worker-0-uid): Ready; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+=== RUN   TestLifecycleCancellation/extend_grace
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "GracePeriod", "message": "Node worker-0 (worker-0-uid): NotReady; "}
+--- PASS: TestLifecycleCancellation (0.27s)
+    --- PASS: TestLifecycleCancellation/Ignore (0.05s)
+    --- PASS: TestLifecycleCancellation/Cordon (0.05s)
+    --- PASS: TestLifecycleCancellation/leave (0.05s)
+    --- PASS: TestLifecycleCancellation/recover (0.05s)
+    --- PASS: TestLifecycleCancellation/extend_grace (0.05s)
+=== RUN   TestLifecycleReplacementGetsIndependentGrace
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "GracePeriod", "message": "Node worker-0 (worker-0-uid): NotReady; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "GracePeriod", "message": "Node worker-0 (replacement-uid): NotReady; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeLeftPool", "message": "Node worker-0 (worker-0-uid) is no longer a member"}
+--- PASS: TestLifecycleReplacementGetsIndependentGrace (0.04s)
+=== RUN   TestLifecycleDeadlineCheckedBetweenEvictions
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainTimedOut", "message": "Node worker-0 (worker-0-uid): Draining; Drain deadline reached; no further evictions or force deletion"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Lifecycle work is blocked; safety constraints are not bypassed"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "LifecycleBlocked", "message": "Failed: worker-0: DrainTimedOut: Drain deadline reached; no further evictions or force deletion"}
+--- PASS: TestLifecycleDeadlineCheckedBetweenEvictions (0.05s)
+=== RUN   TestScenarioSlowAuthorizationCannotEvictAfterDeadline
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainStarted", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Node worker-0 (worker-0-uid): Draining; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "DrainTimedOut", "message": "Node worker-0 (worker-0-uid): Draining; Drain deadline reached during authorization; no further evictions"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Lifecycle work is blocked; safety constraints are not bypassed"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "LifecycleBlocked", "message": "Failed: worker-0: DrainTimedOut: Drain deadline reached during authorization; no further evictions"}
+--- PASS: TestScenarioSlowAuthorizationCannotEvictAfterDeadline (0.06s)
+=== RUN   TestProtectedSettingsAndIndependentWorkers
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/True/Ignore
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): Ready; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/True/Cordon
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): Ready; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/True/Remove
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): Ready; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/False/Ignore
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/False/Cordon
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/False/Remove
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/Unknown/Ignore
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/Unknown/Cordon
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:17Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/Unknown/Remove
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane//Ignore
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane//Cordon
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane//Remove
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/True/Ignore
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): Ready; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/True/Cordon
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): Ready; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/True/Remove
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): Ready; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/False/Ignore
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/False/Cordon
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/False/Remove
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/Unknown/Ignore
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/Unknown/Cordon
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/Unknown/Remove
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master//Ignore
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master//Cordon
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+=== RUN   TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master//Remove
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ProtectedNode", "message": "Node a-protected (a-protected-uid): NotReady; Control-plane Nodes cannot receive desired settings or lifecycle disruption; remove invalid pool membership and review owned cleanup"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node z-worker (z-worker-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Blocked", "message": "Progressing: Retrying failed members; no other lifecycle work is progressing"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MemberReconcileFailed", "message": "Failed: synchronize Node \"a-protected\" (a-protected-uid): protected Node \"a-protected\" cannot receive NodePool desired settings"}
+--- PASS: TestProtectedSettingsAndIndependentWorkers (0.81s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/True/Ignore (0.04s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/True/Cordon (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/True/Remove (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/False/Ignore (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/False/Cordon (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/False/Remove (0.04s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/Unknown/Ignore (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/Unknown/Cordon (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane/Unknown/Remove (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane//Ignore (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane//Cordon (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/control-plane//Remove (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/True/Ignore (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/True/Cordon (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/True/Remove (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/False/Ignore (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/False/Cordon (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/False/Remove (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/Unknown/Ignore (0.04s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/Unknown/Cordon (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master/Unknown/Remove (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master//Ignore (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master//Cordon (0.03s)
+    --- PASS: TestProtectedSettingsAndIndependentWorkers/node-role.kubernetes.io/master//Remove (0.03s)
+=== RUN   TestLifecycleGraceClockAndRecovery
+=== RUN   TestLifecycleGraceClockAndRecovery/False
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "GracePeriod", "message": "Node worker-0 (worker-0-uid): NotReady; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "CordonPending", "message": "Node worker-0 (worker-0-uid): NotReady; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Cordoned", "message": "Node worker-0 (worker-0-uid): NotReady; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "CordonReleased", "message": "Released owned cordon on Node worker-0"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node worker-0 (worker-0-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+=== RUN   TestLifecycleGraceClockAndRecovery/Unknown
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "GracePeriod", "message": "Node worker-0 (worker-0-uid): NotReady; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "CordonPending", "message": "Node worker-0 (worker-0-uid): NotReady; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Cordoned", "message": "Node worker-0 (worker-0-uid): NotReady; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "CordonReleased", "message": "Released owned cordon on Node worker-0"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node worker-0 (worker-0-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+=== RUN   TestLifecycleGraceClockAndRecovery/#00
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "GracePeriod", "message": "Node worker-0 (worker-0-uid): NotReady; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersNotReady", "message": "Ready: At least one member lacks Ready=True"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Reconciling", "message": "Progressing: Lifecycle work is pending"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NoFailure", "message": "Failed: No reconciliation failure or safety blocker"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "CordonPending", "message": "Node worker-0 (worker-0-uid): NotReady; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeCordoned", "message": "Cordoned Node worker-0"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Cordoned", "message": "Node worker-0 (worker-0-uid): NotReady; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "Stable", "message": "Progressing: No lifecycle work is pending"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "CordonReleased", "message": "Released owned cordon on Node worker-0"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "NodeReady", "message": "Node worker-0 (worker-0-uid): Ready; "}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "MembersReady", "message": "Ready: All observed members report Ready=True"}
+--- PASS: TestLifecycleGraceClockAndRecovery (0.24s)
+    --- PASS: TestLifecycleGraceClockAndRecovery/False (0.08s)
+    --- PASS: TestLifecycleGraceClockAndRecovery/Unknown (0.09s)
+    --- PASS: TestLifecycleGraceClockAndRecovery/#00 (0.08s)
+=== RUN   TestDeletionCleanupContinuesAfterMemberFailure
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ObservationFailed", "message": "Ready: Unable to refresh member health"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ReconcileFailed", "message": "Progressing: Retrying after a reconciliation error"}
+  2026-10-12T02:58:18Z	INFO	NodePool transition	{"pool": "pool", "reason": "ReconcileFailed", "message": "Failed: synchronize Node \"a-bad\" (a-bad-uid): invalid settings ownership: unexpected end of JSON input"}
+--- PASS: TestDeletionCleanupContinuesAfterMemberFailure (0.03s)
+PASS
+ok  	example.com/nodepool-controller/internal/controller	28.554s
+?   	example.com/nodepool-controller/test/utils	[no test files]
+
+LOCAL VALIDATION: PASS

@@ -1,0 +1,3 @@
+node/coupang-nodepool-manual-control-plane condition met
+node/coupang-nodepool-manual-worker condition met
+node/coupang-nodepool-manual-worker2 condition met

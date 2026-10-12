@@ -1,0 +1,4 @@
+NAME                        TAINTS
+coupang-lab-control-plane   [map[effect:NoSchedule key:node-role.kubernetes.io/control-plane]]
+coupang-lab-worker-1        [map[effect:NoSchedule key:nodes.example.com/demo value:lab]]
+coupang-lab-worker-2        [map[effect:NoSchedule key:nodes.example.com/demo value:lab]]

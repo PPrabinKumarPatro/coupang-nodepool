@@ -1,0 +1,47 @@
+=== RUN   TestE2E
+Running Suite: NodePool real-manager E2E and demonstration - /home/devuser/coupang-submission/test/e2e
+======================================================================================================
+Random Seed: 1791775080
+
+Will run 1 of 1 specs
+------------------------------
+[BeforeSuite] 
+/home/devuser/coupang-submission/test/e2e/e2e_suite_test.go:52
+  $ docker inspect coupang-nodepool-e2e-worker --format {{index .Config.Labels "io.x-k8s.kind.cluster"}}
+[BeforeSuite] PASSED [0.088 seconds]
+------------------------------
+NodePool assignment flow proves real watches, RBAC, original-Pod retention, restart recovery and live-kubelet eviction
+/home/devuser/coupang-submission/test/e2e/e2e_test.go:33
+  STEP: 1. Verifying the deployed service account can evict, but cannot directly delete or patch Pods @ 10/12/26 03:18:01.09
+  STEP: 2. Creating a NodePool and simulating infrastructure join with kubectl label @ 10/12/26 03:18:01.1
+  $ kubectl --kubeconfig /home/devuser/coupang-submission/artifacts/e2e/private-be57fee16991431792e6c035678a3798/kubeconfig label node coupang-nodepool-e2e-worker nodes.example.com/nodepool=e2e-pool external.example.com/keep=yes
+  $ kubectl --kubeconfig /home/devuser/coupang-submission/artifacts/e2e/private-be57fee16991431792e6c035678a3798/kubeconfig label node coupang-nodepool-e2e-worker2 nodes.example.com/nodepool=e2e-pool external.example.com/keep=yes
+  STEP: 3. Changing labels and taints while preserving unrelated metadata @ 10/12/26 03:18:02.875
+  STEP: 4. Running two cached-image Pods, one per worker, protected by a PDB @ 10/12/26 03:18:03.938
+  STEP: Recording original Pod identities before injecting any failure @ 10/12/26 03:18:05.039
+  STEP: Original Pod nodepool-e2e-workloads/workload-5895957ff9-9x62c UID=e667da55-a040-44bb-8dc6-a3e225f8b245 node=coupang-nodepool-e2e-worker2 @ 10/12/26 03:18:05.047
+  STEP: Original Pod nodepool-e2e-workloads/workload-5895957ff9-n5gm6 UID=61e6e8c9-ea8a-4333-abea-296f94f8b34f node=coupang-nodepool-e2e-worker @ 10/12/26 03:18:05.051
+  STEP: 5. Stopping only the verified disposable worker kubelet; checking PDB blocking @ 10/12/26 03:18:05.059
+  $ docker inspect coupang-nodepool-e2e-worker --format {{index .Config.Labels "io.x-k8s.kind.cluster"}}
+  $ docker exec coupang-nodepool-e2e-worker systemctl stop kubelet
+  STEP: Persisted clocks: NotReadySince=2026-10-12T03:18:57Z; DrainStartedAt=2026-10-12T03:18:58Z @ 10/12/26 03:19:07.814
+  STEP: 6. Restarting the real manager and verifying persisted timers survive @ 10/12/26 03:19:07.826
+  $ kubectl --kubeconfig /home/devuser/coupang-submission/artifacts/e2e/private-be57fee16991431792e6c035678a3798/kubeconfig rollout restart deployment/coupang-nodepool-controller-manager -n coupang-nodepool-system
+  $ kubectl --kubeconfig /home/devuser/coupang-submission/artifacts/e2e/private-be57fee16991431792e6c035678a3798/kubeconfig rollout status deployment/coupang-nodepool-controller-manager -n coupang-nodepool-system --timeout=120s
+  STEP: 7. Restoring the worker; recovery cancels removal and releases our cordon @ 10/12/26 03:19:48.701
+  $ docker exec coupang-nodepool-e2e-worker systemctl start kubelet
+  STEP: 8. Preparing an allowing-PDB drain of the original workload with a healthy kubelet @ 10/12/26 03:19:50.005
+  $ docker inspect coupang-nodepool-e2e-worker --format {{index .Config.Labels "io.x-k8s.kind.cluster"}}
+  STEP: 9. Holding only the disposable Node's Ready status; the deployed manager must request eviction @ 10/12/26 03:19:54.462
+  STEP: Accepted API eviction and kubelet-reported termination, confirmed by CRI: Pod UID=61e6e8c9-ea8a-4333-abea-296f94f8b34f container=containerd://e44b51e2a15715e18bf5ab313b639ce4f56130710cd800c33620f28a1cbd067b Node UID=2c035c8d-3619-42fc-ba75-3ac9690f7669 @ 10/12/26 03:19:57.667
+  STEP: Releasing only the finalizer on the already-evicted, runtime-terminated Pod; no Pod or Deployment deletion @ 10/12/26 03:20:09.667
+  STEP: Original Pod UID=61e6e8c9-ea8a-4333-abea-296f94f8b34f disappeared before observing removal of old Node UID=2c035c8d-3619-42fc-ba75-3ac9690f7669 @ 10/12/26 03:20:10.693
+  STEP: 10. Confirming real Events and deleting the pool with ownership-safe Ready-node cleanup @ 10/12/26 03:20:10.704
+• [130.509 seconds]
+------------------------------
+
+Ran 1 of 1 Specs in 130.598 seconds
+SUCCESS! -- 1 Passed | 0 Failed | 0 Pending | 0 Skipped
+--- PASS: TestE2E (130.60s)
+PASS
+ok  	example.com/nodepool-controller/test/e2e	130.631s

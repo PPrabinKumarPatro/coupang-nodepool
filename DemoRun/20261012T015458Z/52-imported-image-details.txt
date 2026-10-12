@@ -1,0 +1,60 @@
+{
+  "info": {
+    "chainID": "sha256:2b6c34a01c2980d920c826c44d43af0e41e2512cb4cdeec834ad00e5f27aa6f0",
+    "imageSpec": {
+      "architecture": "amd64",
+      "config": {
+        "Entrypoint": [
+          "/manager"
+        ],
+        "Env": [
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        ],
+        "User": "65532:65532",
+        "WorkingDir": "/"
+      },
+      "created": "2026-10-11T23:25:30.718572096Z",
+      "history": [
+        {
+          "comment": "buildkit.dockerfile.v0",
+          "created": "2026-10-11T23:25:30.718572096Z",
+          "created_by": "COPY bin/manager /manager # buildkit"
+        },
+        {
+          "comment": "buildkit.dockerfile.v0",
+          "created": "2026-10-11T23:25:30.718572096Z",
+          "created_by": "USER 65532:65532",
+          "empty_layer": true
+        },
+        {
+          "comment": "buildkit.dockerfile.v0",
+          "created": "2026-10-11T23:25:30.718572096Z",
+          "created_by": "ENTRYPOINT [\"/manager\"]",
+          "empty_layer": true
+        }
+      ],
+      "os": "linux",
+      "rootfs": {
+        "diff_ids": [
+          "sha256:2b6c34a01c2980d920c826c44d43af0e41e2512cb4cdeec834ad00e5f27aa6f0"
+        ],
+        "type": "layers"
+      }
+    }
+  },
+  "status": {
+    "id": "sha256:708eaf84b37dad8d75d3ea6905be131b460c3e0ee8c8b4f8e8df836eea4c98f7",
+    "pinned": false,
+    "repoDigests": [
+      "docker.io/library/import-2026-10-12@sha256:a98574af48dfda2eeac9408918980f71b07f1cff707935f563514bddc3714c71"
+    ],
+    "repoTags": [
+      "docker.io/library/coupang-nodepool:final-20261011"
+    ],
+    "size": "34656245",
+    "uid": {
+      "value": "65532"
+    },
+    "username": ""
+  }
+}

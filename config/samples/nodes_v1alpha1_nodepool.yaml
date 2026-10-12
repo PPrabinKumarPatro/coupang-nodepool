@@ -1,0 +1,20 @@
+apiVersion: nodes.example.com/v1alpha1
+kind: NodePool
+metadata:
+  labels:
+    app.kubernetes.io/name: coupang-nodepool
+    app.kubernetes.io/managed-by: kustomize
+  name: nodepool-sample
+spec:
+  image: ubuntu-24.04
+  labels:
+    workload: batch
+  taints:
+  - key: dedicated
+    value: batch
+    effect: NoSchedule
+  unreadyPolicy:
+    action: Ignore
+    gracePeriod: 5m
+    drainTimeout: 5m
+    maxConcurrentRemovals: 1

@@ -1,0 +1,47 @@
+apiVersion: nodes.example.com/v1alpha1
+kind: NodePool
+metadata:
+  creationTimestamp: "2026-10-12T02:41:52Z"
+  finalizers:
+  - nodes.example.com/settings-cleanup
+  generation: 1
+  name: manual-pool
+  resourceVersion: "2806"
+  uid: 017f6261-13b3-49b4-abb1-2a924ef8a2d4
+spec:
+  image: informational-no-provisioning
+  labels:
+    workload: manual-demo
+  unreadyPolicy:
+    action: Remove
+    drainTimeout: 120s
+    gracePeriod: 15s
+    maxConcurrentRemovals: 1
+status:
+  conditions:
+  - lastTransitionTime: "2026-10-12T02:52:44Z"
+    message: All observed members report Ready=True
+    observedGeneration: 1
+    reason: MembersReady
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2026-10-12T02:52:44Z"
+    message: No lifecycle work is pending
+    observedGeneration: 1
+    reason: Stable
+    status: "False"
+    type: Progressing
+  - lastTransitionTime: "2026-10-12T02:49:02Z"
+    message: No reconciliation failure or safety blocker
+    observedGeneration: 1
+    reason: NoFailure
+    status: "False"
+    type: Failed
+  nodes:
+  - name: coupang-nodepool-manual-worker2
+    phase: Ready
+    readyTransitionTime: "2026-10-12T02:36:29Z"
+    reason: NodeReady
+    uid: b990a1a1-4a33-43fb-9129-3c31e7714174
+  observedGeneration: 1
+  readyNodes: 1

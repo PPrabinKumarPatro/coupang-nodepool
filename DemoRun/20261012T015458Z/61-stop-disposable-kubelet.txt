@@ -1,0 +1,2 @@
+Verified target: coupang-nodepool-manual-worker; cluster=coupang-nodepool-manual
+Worker kubelet stopped.

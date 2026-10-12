@@ -1,0 +1,3 @@
+NAME                              UID                                    NODE                              PHASE     DELETING
+manual-workload-f7b4d9559-j8mxw   1bf85fea-d8c5-42d9-99d3-46156e1e2780   coupang-nodepool-manual-worker2   Running   <none>
+manual-workload-f7b4d9559-mj7x4   cc1766f7-132a-4b4e-b00b-1c127c634a8c   coupang-nodepool-manual-worker    Running   <none>

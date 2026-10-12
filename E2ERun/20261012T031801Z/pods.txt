@@ -1,0 +1,17 @@
+NAMESPACE                 NAME                                                         READY   STATUS    RESTARTS     AGE
+coupang-nodepool-system   coupang-nodepool-controller-manager-5cb698ddbf-fjxnx         1/1     Running   0            64s
+kube-system               coredns-559f6c778d-gfrbq                                     1/1     Running   0            2m55s
+kube-system               coredns-559f6c778d-lz9tb                                     1/1     Running   0            2m55s
+kube-system               etcd-coupang-nodepool-e2e-control-plane                      1/1     Running   0            3m1s
+kube-system               kindnet-4s99l                                                1/1     Running   0            2m51s
+kube-system               kindnet-j4qbt                                                1/1     Running   0            2m50s
+kube-system               kindnet-q2h5v                                                1/1     Running   0            2m55s
+kube-system               kube-apiserver-coupang-nodepool-e2e-control-plane            1/1     Running   0            3m1s
+kube-system               kube-controller-manager-coupang-nodepool-e2e-control-plane   1/1     Running   0            3m1s
+kube-system               kube-proxy-4szcd                                             1/1     Running   0            2m55s
+kube-system               kube-proxy-64djr                                             1/1     Running   0            2m50s
+kube-system               kube-proxy-q4bpg                                             1/1     Running   1 (3s ago)   2m51s
+kube-system               kube-scheduler-coupang-nodepool-e2e-control-plane            1/1     Running   0            3m1s
+local-path-storage        local-path-provisioner-75f7fc7dc5-whldg                      1/1     Running   0            2m55s
+nodepool-e2e-workloads    workload-5895957ff9-9x62c                                    1/1     Running   0            2m9s
+nodepool-e2e-workloads    workload-5895957ff9-n28qr                                    0/1     Pending   0            16s

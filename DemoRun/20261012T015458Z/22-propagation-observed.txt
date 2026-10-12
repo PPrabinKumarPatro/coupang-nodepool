@@ -1,0 +1,2 @@
+node/coupang-lab-worker-1 condition met
+node/coupang-lab-worker-2 condition met

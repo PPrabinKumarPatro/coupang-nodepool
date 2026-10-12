@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- nodes_v1alpha1_nodepool.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples

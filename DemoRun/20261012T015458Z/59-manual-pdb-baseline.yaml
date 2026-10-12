@@ -1,0 +1,27 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  creationTimestamp: "2026-10-12T02:41:52Z"
+  generation: 1
+  name: manual-budget
+  namespace: manual-demo
+  resourceVersion: "1339"
+  uid: 276be2a1-a81a-4097-a3b2-bb654ff5d50c
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: manual-workload
+status:
+  conditions:
+  - lastTransitionTime: "2026-10-12T02:41:52Z"
+    message: ""
+    observedGeneration: 1
+    reason: InsufficientPods
+    status: "False"
+    type: DisruptionAllowed
+  currentHealthy: 2
+  desiredHealthy: 2
+  disruptionsAllowed: 0
+  expectedPods: 2
+  observedGeneration: 1

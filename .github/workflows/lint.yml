@@ -1,0 +1,32 @@
+name: Formatting and static checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - id: versions
+        run: |
+          source hack/versions.env
+          echo "go=$GO_VERSION" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
+        with:
+          go-version: ${{ steps.versions.outputs.go }}
+      - run: go mod download && go mod verify
+      - name: Check formatting, static analysis and tagged E2E compilation
+        run: |
+          make lint
+          go vet -mod=readonly -tags=e2e ./test/...
+          go test -mod=readonly -tags=e2e ./test/e2e -run '^$'
+          bash -n hack/e2e.sh hack/demo.sh hack/envtest-assets.sh hack/ci-tools.sh

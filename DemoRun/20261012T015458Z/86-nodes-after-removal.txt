@@ -1,0 +1,3 @@
+NAME                                    STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                       KERNEL-VERSION                              CONTAINER-RUNTIME
+coupang-nodepool-manual-control-plane   Ready    control-plane   17m   v1.37.0   172.18.0.5    <none>        Debian GNU/Linux 13 (trixie)   6.18.54.1-microsoft-standard-WSL2 (amd64)   containerd://2.3.4
+coupang-nodepool-manual-worker2         Ready    <none>          17m   v1.37.0   172.18.0.4    <none>        Debian GNU/Linux 13 (trixie)   6.18.54.1-microsoft-standard-WSL2 (amd64)   containerd://2.3.4

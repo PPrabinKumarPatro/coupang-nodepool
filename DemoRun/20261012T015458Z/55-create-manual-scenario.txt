@@ -1,0 +1,4 @@
+namespace/manual-demo created
+nodepool.nodes.example.com/manual-pool created
+deployment.apps/manual-workload created
+poddisruptionbudget.policy/manual-budget created

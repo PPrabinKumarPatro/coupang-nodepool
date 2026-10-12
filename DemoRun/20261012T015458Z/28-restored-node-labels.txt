@@ -1,0 +1,4 @@
+NAME                        STATUS   ROLES           AGE   VERSION   NODEPOOL   WORKLOAD
+coupang-lab-control-plane   Ready    control-plane   32h   v1.37.0              
+coupang-lab-worker-1        Ready    worker          32h   v1.37.0   lab-demo   nodepool-demo
+coupang-lab-worker-2        Ready    worker          32h   v1.37.0   lab-demo   nodepool-demo

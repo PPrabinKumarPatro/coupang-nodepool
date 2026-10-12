@@ -1,0 +1,3 @@
+NAME                               UID                                    NODE                   PHASE
+scheduling-demo-5b77456d65-7d59r   28ade365-ed11-4519-a30c-a0ea5cb8eeda   coupang-lab-worker-1   Running
+scheduling-demo-5b77456d65-wlzwn   b807aacf-632d-45dd-bf80-3224a9062607   coupang-lab-worker-2   Running

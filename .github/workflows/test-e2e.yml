@@ -1,0 +1,48 @@
+name: Disposable kind E2E
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+jobs:
+  e2e:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - id: versions
+        run: |
+          source hack/versions.env
+          echo "go=$GO_VERSION" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
+        with:
+          go-version: ${{ steps.versions.outputs.go }}
+      - name: Fetch and verify declared dependencies
+        run: go mod download && go mod verify
+      - name: Install checksum-verified kind and kubectl
+        run: bash hack/ci-tools.sh
+      - name: Three-node manager, RBAC, PDB and worker-removal scenario
+        env:
+          COUPANG_ALLOW_DISRUPTIVE_E2E: "yes"
+          COUPANG_ALLOW_IMAGE_PULL: "yes"
+        run: make test-e2e
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: e2e-nonsecret-evidence
+          path: |
+            artifacts/e2e/tests.log
+            artifacts/e2e/nodes.txt
+            artifacts/e2e/pods.txt
+            artifacts/e2e/pools.yaml
+            artifacts/e2e/events.txt
+            artifacts/e2e/manager.log
+            artifacts/e2e/versions.json
+          if-no-files-found: warn
+          retention-days: 7

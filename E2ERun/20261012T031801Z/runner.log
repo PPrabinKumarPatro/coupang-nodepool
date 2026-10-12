@@ -1,0 +1,137 @@
+ok  	example.com/nodepool-controller/test/e2e	(cached) [no tests to run]
+CGO_ENABLED=0 go build -mod=readonly -trimpath -o bin/manager ./cmd
+docker build --network=none --pull=false -t "coupang-nodepool:dev" .
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 260B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load .dockerignore
+#2 transferring context: 72B done
+#2 DONE 0.0s
+
+#3 [internal] load build context
+#3 transferring context: 76.87MB 1.1s done
+#3 DONE 1.2s
+
+#4 [1/1] COPY bin/manager /manager
+#4 CACHED
+
+#5 exporting to image
+#5 exporting layers done
+#5 exporting manifest sha256:4a15917a975931b7f5001f9421263e2fbf2dfdcaa9ea5a49d0001f4379fdf53f done
+#5 exporting config sha256:708eaf84b37dad8d75d3ea6905be131b460c3e0ee8c8b4f8e8df836eea4c98f7 done
+#5 exporting attestation manifest sha256:3becc7a901703b7e7d75fa2fa5646147d3a299bce1ae0f946154ad9dbb766709 0.0s done
+#5 exporting manifest list sha256:b401fc113a1768b3e6a80cd01ccba606683d8af7fed7e78ed05723b68cb456c2 0.0s done
+#5 naming to docker.io/library/coupang-nodepool:dev done
+#5 unpacking to docker.io/library/coupang-nodepool:dev 0.0s done
+#5 DONE 0.1s
+Creating cluster "coupang-nodepool-e2e" ...
+ • Ensuring node image (kindest/node:v1.37.0) 🖼️  ...
+ ✓ Ensuring node image (kindest/node:v1.37.0) 🖼️
+ • Preparing nodes 📦 📦 📦   ...
+ ✓ Preparing nodes 📦 📦 📦 
+ • Writing configuration 📜  ...
+ ✓ Writing configuration 📜
+ • Starting control-plane 🕹️  ...
+ ✓ Starting control-plane 🕹️
+ • Installing CNI 🔌  ...
+ ✓ Installing CNI 🔌
+ • Installing StorageClass 💾  ...
+ ✓ Installing StorageClass 💾
+ • Joining worker nodes 🚜  ...
+ ✓ Joining worker nodes 🚜
+ • Waiting ≤ 3m0s for control-plane = Ready ⏳  ...
+ ✓ Waiting ≤ 3m0s for control-plane = Ready ⏳
+ • Ready after 7s 💚
+Set kubectl context to "kind-coupang-nodepool-e2e"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-coupang-nodepool-e2e --kubeconfig /home/devuser/coupang-submission/artifacts/e2e/private-be57fee16991431792e6c035678a3798/kubeconfig
+
+Have a nice day! 👋
+node/coupang-nodepool-e2e-control-plane condition met
+node/coupang-nodepool-e2e-worker condition met
+node/coupang-nodepool-e2e-worker2 condition met
+pod/coredns-559f6c778d-gfrbq condition met
+pod/coredns-559f6c778d-lz9tb condition met
+pod/etcd-coupang-nodepool-e2e-control-plane condition met
+pod/kindnet-4s99l condition met
+pod/kindnet-j4qbt condition met
+pod/kindnet-q2h5v condition met
+pod/kube-apiserver-coupang-nodepool-e2e-control-plane condition met
+pod/kube-controller-manager-coupang-nodepool-e2e-control-plane condition met
+pod/kube-proxy-4szcd condition met
+pod/kube-proxy-64djr condition met
+pod/kube-proxy-q4bpg condition met
+pod/kube-scheduler-coupang-nodepool-e2e-control-plane condition met
+Image: "coupang-nodepool:dev" with ID "sha256:b401fc113a1768b3e6a80cd01ccba606683d8af7fed7e78ed05723b68cb456c2" not yet present on node "coupang-nodepool-e2e-control-plane", loading...
+Image: "coupang-nodepool:dev" with ID "sha256:b401fc113a1768b3e6a80cd01ccba606683d8af7fed7e78ed05723b68cb456c2" not yet present on node "coupang-nodepool-e2e-worker", loading...
+Image: "coupang-nodepool:dev" with ID "sha256:b401fc113a1768b3e6a80cd01ccba606683d8af7fed7e78ed05723b68cb456c2" not yet present on node "coupang-nodepool-e2e-worker2", loading...
+namespace/coupang-nodepool-system created
+customresourcedefinition.apiextensions.k8s.io/nodepools.nodes.example.com created
+serviceaccount/coupang-nodepool-controller-manager created
+role.rbac.authorization.k8s.io/coupang-nodepool-leader-election-role created
+clusterrole.rbac.authorization.k8s.io/coupang-nodepool-manager-role created
+clusterrole.rbac.authorization.k8s.io/coupang-nodepool-nodepool-admin-role created
+clusterrole.rbac.authorization.k8s.io/coupang-nodepool-nodepool-editor-role created
+clusterrole.rbac.authorization.k8s.io/coupang-nodepool-nodepool-viewer-role created
+rolebinding.rbac.authorization.k8s.io/coupang-nodepool-leader-election-rolebinding created
+clusterrolebinding.rbac.authorization.k8s.io/coupang-nodepool-manager-rolebinding created
+deployment.apps/coupang-nodepool-controller-manager created
+Waiting for deployment "coupang-nodepool-controller-manager" rollout to finish: 0 of 1 updated replicas are available...
+deployment "coupang-nodepool-controller-manager" successfully rolled out
+Evidence includes original Pod UIDs at PDB-blocked/deadline checkpoints and a separate allowing-PDB live-kubelet eviction.
+The latter requires v1 ValidatingAdmissionPolicy: a temporary old-Node-UID rule holds Ready=False, not kubelet execution.
+A finalizer holds the already-evicted Pod while terminal kubelet status + CRI and Node retention are checked; then it is released.
+Unsupported admission or missing runtime evidence fails the test; it never falls back to deleting workloads.
+=== RUN   TestE2E
+Running Suite: NodePool real-manager E2E and demonstration - /home/devuser/coupang-submission/test/e2e
+======================================================================================================
+Random Seed: 1791775080
+
+Will run 1 of 1 specs
+------------------------------
+[BeforeSuite] 
+/home/devuser/coupang-submission/test/e2e/e2e_suite_test.go:52
+  $ docker inspect coupang-nodepool-e2e-worker --format {{index .Config.Labels "io.x-k8s.kind.cluster"}}
+[BeforeSuite] PASSED [0.088 seconds]
+------------------------------
+NodePool assignment flow proves real watches, RBAC, original-Pod retention, restart recovery and live-kubelet eviction
+/home/devuser/coupang-submission/test/e2e/e2e_test.go:33
+  STEP: 1. Verifying the deployed service account can evict, but cannot directly delete or patch Pods @ 10/12/26 03:18:01.09
+  STEP: 2. Creating a NodePool and simulating infrastructure join with kubectl label @ 10/12/26 03:18:01.1
+  $ kubectl --kubeconfig /home/devuser/coupang-submission/artifacts/e2e/private-be57fee16991431792e6c035678a3798/kubeconfig label node coupang-nodepool-e2e-worker nodes.example.com/nodepool=e2e-pool external.example.com/keep=yes
+  $ kubectl --kubeconfig /home/devuser/coupang-submission/artifacts/e2e/private-be57fee16991431792e6c035678a3798/kubeconfig label node coupang-nodepool-e2e-worker2 nodes.example.com/nodepool=e2e-pool external.example.com/keep=yes
+  STEP: 3. Changing labels and taints while preserving unrelated metadata @ 10/12/26 03:18:02.875
+  STEP: 4. Running two cached-image Pods, one per worker, protected by a PDB @ 10/12/26 03:18:03.938
+  STEP: Recording original Pod identities before injecting any failure @ 10/12/26 03:18:05.039
+  STEP: Original Pod nodepool-e2e-workloads/workload-5895957ff9-9x62c UID=e667da55-a040-44bb-8dc6-a3e225f8b245 node=coupang-nodepool-e2e-worker2 @ 10/12/26 03:18:05.047
+  STEP: Original Pod nodepool-e2e-workloads/workload-5895957ff9-n5gm6 UID=61e6e8c9-ea8a-4333-abea-296f94f8b34f node=coupang-nodepool-e2e-worker @ 10/12/26 03:18:05.051
+  STEP: 5. Stopping only the verified disposable worker kubelet; checking PDB blocking @ 10/12/26 03:18:05.059
+  $ docker inspect coupang-nodepool-e2e-worker --format {{index .Config.Labels "io.x-k8s.kind.cluster"}}
+  $ docker exec coupang-nodepool-e2e-worker systemctl stop kubelet
+  STEP: Persisted clocks: NotReadySince=2026-10-12T03:18:57Z; DrainStartedAt=2026-10-12T03:18:58Z @ 10/12/26 03:19:07.814
+  STEP: 6. Restarting the real manager and verifying persisted timers survive @ 10/12/26 03:19:07.826
+  $ kubectl --kubeconfig /home/devuser/coupang-submission/artifacts/e2e/private-be57fee16991431792e6c035678a3798/kubeconfig rollout restart deployment/coupang-nodepool-controller-manager -n coupang-nodepool-system
+  $ kubectl --kubeconfig /home/devuser/coupang-submission/artifacts/e2e/private-be57fee16991431792e6c035678a3798/kubeconfig rollout status deployment/coupang-nodepool-controller-manager -n coupang-nodepool-system --timeout=120s
+  STEP: 7. Restoring the worker; recovery cancels removal and releases our cordon @ 10/12/26 03:19:48.701
+  $ docker exec coupang-nodepool-e2e-worker systemctl start kubelet
+  STEP: 8. Preparing an allowing-PDB drain of the original workload with a healthy kubelet @ 10/12/26 03:19:50.005
+  $ docker inspect coupang-nodepool-e2e-worker --format {{index .Config.Labels "io.x-k8s.kind.cluster"}}
+  STEP: 9. Holding only the disposable Node's Ready status; the deployed manager must request eviction @ 10/12/26 03:19:54.462
+  STEP: Accepted API eviction and kubelet-reported termination, confirmed by CRI: Pod UID=61e6e8c9-ea8a-4333-abea-296f94f8b34f container=containerd://e44b51e2a15715e18bf5ab313b639ce4f56130710cd800c33620f28a1cbd067b Node UID=2c035c8d-3619-42fc-ba75-3ac9690f7669 @ 10/12/26 03:19:57.667
+  STEP: Releasing only the finalizer on the already-evicted, runtime-terminated Pod; no Pod or Deployment deletion @ 10/12/26 03:20:09.667
+  STEP: Original Pod UID=61e6e8c9-ea8a-4333-abea-296f94f8b34f disappeared before observing removal of old Node UID=2c035c8d-3619-42fc-ba75-3ac9690f7669 @ 10/12/26 03:20:10.693
+  STEP: 10. Confirming real Events and deleting the pool with ownership-safe Ready-node cleanup @ 10/12/26 03:20:10.704
+• [130.509 seconds]
+------------------------------
+
+Ran 1 of 1 Specs in 130.598 seconds
+SUCCESS! -- 1 Passed | 0 Failed | 0 Pending | 0 Skipped
+--- PASS: TestE2E (130.60s)
+PASS
+ok  	example.com/nodepool-controller/test/e2e	130.631s
+Deleting cluster "coupang-nodepool-e2e" ...
+Deleted nodes: ["coupang-nodepool-e2e-control-plane" "coupang-nodepool-e2e-worker" "coupang-nodepool-e2e-worker2"]

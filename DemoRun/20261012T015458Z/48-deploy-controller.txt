@@ -1,0 +1,11 @@
+namespace/coupang-nodepool-system created
+customresourcedefinition.apiextensions.k8s.io/nodepools.nodes.example.com created
+serviceaccount/coupang-nodepool-controller-manager created
+role.rbac.authorization.k8s.io/coupang-nodepool-leader-election-role created
+clusterrole.rbac.authorization.k8s.io/coupang-nodepool-manager-role created
+clusterrole.rbac.authorization.k8s.io/coupang-nodepool-nodepool-admin-role created
+clusterrole.rbac.authorization.k8s.io/coupang-nodepool-nodepool-editor-role created
+clusterrole.rbac.authorization.k8s.io/coupang-nodepool-nodepool-viewer-role created
+rolebinding.rbac.authorization.k8s.io/coupang-nodepool-leader-election-rolebinding created
+clusterrolebinding.rbac.authorization.k8s.io/coupang-nodepool-manager-rolebinding created
+deployment.apps/coupang-nodepool-controller-manager created

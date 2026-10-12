@@ -1,0 +1,1 @@
+nodepool.nodes.example.com/lab-demo condition met

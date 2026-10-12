@@ -1,0 +1,59 @@
+apiVersion: nodes.example.com/v1alpha1
+kind: NodePool
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"nodes.example.com/v1alpha1","kind":"NodePool","metadata":{"annotations":{},"name":"lab-demo"},"spec":{"image":"informational-no-provisioning","labels":{"workload":"nodepool-demo"},"taints":[{"effect":"NoSchedule","key":"nodes.example.com/demo","value":"lab"}],"unreadyPolicy":{"action":"Ignore","drainTimeout":"120s","gracePeriod":"60s","maxConcurrentRemovals":1}}}
+  creationTimestamp: "2026-10-11T23:33:29Z"
+  finalizers:
+  - nodes.example.com/settings-cleanup
+  generation: 2
+  name: lab-demo
+  resourceVersion: "131657"
+  uid: c155497e-6dec-4109-b45f-28410aeb5b15
+spec:
+  image: informational-no-provisioning
+  labels:
+    workload: nodepool-demo-v2
+  taints:
+  - effect: NoSchedule
+    key: nodes.example.com/demo
+    value: lab
+  unreadyPolicy:
+    action: Ignore
+    drainTimeout: 120s
+    gracePeriod: 60s
+    maxConcurrentRemovals: 1
+status:
+  conditions:
+  - lastTransitionTime: "2026-10-11T23:33:30Z"
+    message: All observed members report Ready=True
+    observedGeneration: 2
+    reason: MembersReady
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2026-10-11T23:33:29Z"
+    message: No lifecycle work is pending
+    observedGeneration: 2
+    reason: Stable
+    status: "False"
+    type: Progressing
+  - lastTransitionTime: "2026-10-11T23:33:29Z"
+    message: No reconciliation failure or safety blocker
+    observedGeneration: 2
+    reason: NoFailure
+    status: "False"
+    type: Failed
+  nodes:
+  - name: coupang-lab-worker-1
+    phase: Ready
+    readyTransitionTime: "2026-10-10T18:22:07Z"
+    reason: NodeReady
+    uid: 949ef512-4550-4307-b700-a8c8c941645e
+  - name: coupang-lab-worker-2
+    phase: Ready
+    readyTransitionTime: "2026-10-10T18:22:07Z"
+    reason: NodeReady
+    uid: f1362c87-fd33-4f9a-ab18-e5c704847223
+  observedGeneration: 2
+  readyNodes: 2

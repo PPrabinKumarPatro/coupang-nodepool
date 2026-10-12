@@ -1,0 +1,2 @@
+NAME                   TAINTS   ANNOTATIONS
+coupang-lab-worker-2   <none>   map[flannel.alpha.coreos.com/backend-data:{"VNI":1,"VtepMAC":"9e:72:90:b4:8d:6e"} flannel.alpha.coreos.com/backend-type:vxlan flannel.alpha.coreos.com/kube-subnet-manager:true flannel.alpha.coreos.com/public-ip:172.24.105.98 node.alpha.kubernetes.io/ttl:0 volumes.kubernetes.io/controller-managed-attach-detach:true]

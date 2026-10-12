@@ -1,0 +1,5 @@
+Verified disposable container: coupang-nodepool-manual-control-plane
+Verified disposable container: coupang-nodepool-manual-worker
+Verified disposable container: coupang-nodepool-manual-worker2
+Deleting cluster "coupang-nodepool-manual" ...
+Deleted nodes: ["coupang-nodepool-manual-worker" "coupang-nodepool-manual-control-plane" "coupang-nodepool-manual-worker2"]

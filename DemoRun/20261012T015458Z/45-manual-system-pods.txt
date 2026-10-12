@@ -1,0 +1,14 @@
+NAMESPACE            NAME                                                            READY   STATUS    RESTARTS   AGE   IP           NODE                                    NOMINATED NODE   READINESS GATES
+kube-system          coredns-559f6c778d-f6dtr                                        1/1     Running   0          80s   10.244.0.3   coupang-nodepool-manual-control-plane   <none>           <none>
+kube-system          coredns-559f6c778d-pwlg7                                        1/1     Running   0          80s   10.244.0.4   coupang-nodepool-manual-control-plane   <none>           <none>
+kube-system          etcd-coupang-nodepool-manual-control-plane                      1/1     Running   0          87s   172.18.0.5   coupang-nodepool-manual-control-plane   <none>           <none>
+kube-system          kindnet-cjcwd                                                   1/1     Running   0          77s   172.18.0.3   coupang-nodepool-manual-worker          <none>           <none>
+kube-system          kindnet-kv9j5                                                   1/1     Running   0          80s   172.18.0.5   coupang-nodepool-manual-control-plane   <none>           <none>
+kube-system          kindnet-pn77k                                                   1/1     Running   0          77s   172.18.0.4   coupang-nodepool-manual-worker2         <none>           <none>
+kube-system          kube-apiserver-coupang-nodepool-manual-control-plane            1/1     Running   0          87s   172.18.0.5   coupang-nodepool-manual-control-plane   <none>           <none>
+kube-system          kube-controller-manager-coupang-nodepool-manual-control-plane   1/1     Running   0          87s   172.18.0.5   coupang-nodepool-manual-control-plane   <none>           <none>
+kube-system          kube-proxy-dj9pc                                                1/1     Running   0          77s   172.18.0.3   coupang-nodepool-manual-worker          <none>           <none>
+kube-system          kube-proxy-pwvfl                                                1/1     Running   0          80s   172.18.0.5   coupang-nodepool-manual-control-plane   <none>           <none>
+kube-system          kube-proxy-qtbkg                                                1/1     Running   0          77s   172.18.0.4   coupang-nodepool-manual-worker2         <none>           <none>
+kube-system          kube-scheduler-coupang-nodepool-manual-control-plane            1/1     Running   0          87s   172.18.0.5   coupang-nodepool-manual-control-plane   <none>           <none>
+local-path-storage   local-path-provisioner-75f7fc7dc5-g6sph                         1/1     Running   0          80s   10.244.0.2   coupang-nodepool-manual-control-plane   <none>           <none>

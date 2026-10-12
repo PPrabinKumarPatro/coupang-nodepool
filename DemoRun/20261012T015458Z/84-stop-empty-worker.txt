@@ -1,0 +1,2 @@
+Verified removal-test target: coupang-nodepool-manual-worker
+Worker kubelet stopped.

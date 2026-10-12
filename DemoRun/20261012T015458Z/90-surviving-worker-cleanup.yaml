@@ -1,0 +1,148 @@
+apiVersion: v1
+kind: Node
+metadata:
+  annotations:
+    node.alpha.kubernetes.io/ttl: "0"
+    volumes.kubernetes.io/controller-managed-attach-detach: "true"
+  creationTimestamp: "2026-10-12T02:36:16Z"
+  labels:
+    beta.kubernetes.io/arch: amd64
+    beta.kubernetes.io/os: linux
+    kubernetes.io/arch: amd64
+    kubernetes.io/hostname: coupang-nodepool-manual-worker2
+    kubernetes.io/os: linux
+    nodes.example.com/e2e-worker: "true"
+    nodes.example.com/nodepool: manual-pool
+  name: coupang-nodepool-manual-worker2
+  resourceVersion: "3060"
+  uid: b990a1a1-4a33-43fb-9129-3c31e7714174
+spec:
+  podCIDR: 10.244.1.0/24
+  podCIDRs:
+  - 10.244.1.0/24
+  providerID: kind://docker/coupang-nodepool-manual/coupang-nodepool-manual-worker2
+status:
+  addresses:
+  - address: 172.18.0.4
+    type: InternalIP
+  - address: coupang-nodepool-manual-worker2
+    type: Hostname
+  allocatable:
+    cpu: "16"
+    ephemeral-storage: "1081101176832"
+    hugepages-1Gi: "0"
+    hugepages-2Mi: "0"
+    memory: 32841612Ki
+    pods: "110"
+  capacity:
+    cpu: "16"
+    ephemeral-storage: "1081101176832"
+    hugepages-1Gi: "0"
+    hugepages-2Mi: "0"
+    memory: 32841612Ki
+    pods: "110"
+  conditions:
+  - lastHeartbeatTime: "2026-10-12T02:50:02Z"
+    lastTransitionTime: "2026-10-12T02:36:16Z"
+    message: kubelet has sufficient memory available
+    reason: KubeletHasSufficientMemory
+    status: "False"
+    type: MemoryPressure
+  - lastHeartbeatTime: "2026-10-12T02:50:02Z"
+    lastTransitionTime: "2026-10-12T02:36:16Z"
+    message: kubelet has no disk pressure
+    reason: KubeletHasNoDiskPressure
+    status: "False"
+    type: DiskPressure
+  - lastHeartbeatTime: "2026-10-12T02:50:02Z"
+    lastTransitionTime: "2026-10-12T02:36:16Z"
+    message: kubelet has sufficient PID available
+    reason: KubeletHasSufficientPID
+    status: "False"
+    type: PIDPressure
+  - lastHeartbeatTime: "2026-10-12T02:50:02Z"
+    lastTransitionTime: "2026-10-12T02:36:29Z"
+    message: kubelet is posting ready status
+    reason: KubeletReady
+    status: "True"
+    type: Ready
+  daemonEndpoints:
+    kubeletEndpoint:
+      Port: 10250
+  declaredFeatures:
+  - ExtendWebSocketsToKubelet
+  - InPlacePodLevelResourcesVerticalScaling
+  - InPlacePodVerticalScalingInitContainers
+  - RestartAllContainersOnContainerExits
+  features:
+    supplementalGroupsPolicy: true
+  images:
+  - names:
+    - docker.io/library/import-2026-08-26@sha256:eff360f86083f21c9ceaa64cbaa2e4d439d9e7e1d6834c21d25daac35e58015b
+    - registry.k8s.io/kube-apiserver-amd64:v1.37.0
+    - registry.k8s.io/kube-apiserver:v1.37.0
+    sizeBytes: 104328436
+  - names:
+    - docker.io/library/import-2026-08-26@sha256:79bd77de40aa3294690796f94cdc8a08c4cf6a51a6a3500425c56c9e13622cc7
+    - registry.k8s.io/kube-controller-manager-amd64:v1.37.0
+    - registry.k8s.io/kube-controller-manager:v1.37.0
+    sizeBytes: 91037405
+  - names:
+    - docker.io/library/import-2026-08-26@sha256:1aa5cce2a7d436c309f705cf2a32a50f8378a2b6f2e5dd4bb26f81c714dd0b86
+    - registry.k8s.io/kube-proxy-amd64:v1.37.0
+    - registry.k8s.io/kube-proxy:v1.37.0
+    sizeBytes: 82823264
+  - names:
+    - docker.io/library/import-2026-08-26@sha256:213e68034d4be2f89076d1d446501434d1bfdff862916392708f095f5fecb6e1
+    - registry.k8s.io/kube-scheduler-amd64:v1.37.0
+    - registry.k8s.io/kube-scheduler:v1.37.0
+    sizeBytes: 62688989
+  - names:
+    - docker.io/kindest/kindnetd:v20260820-69b56db7
+    sizeBytes: 39744255
+  - names:
+    - docker.io/library/import-2026-10-12@sha256:a98574af48dfda2eeac9408918980f71b07f1cff707935f563514bddc3714c71
+    - docker.io/library/coupang-nodepool:final-20261011
+    sizeBytes: 34656245
+  - names:
+    - registry.k8s.io/coredns/coredns:v1.14.6
+    sizeBytes: 23758055
+  - names:
+    - registry.k8s.io/etcd:3.7.0-0
+    sizeBytes: 22342384
+  - names:
+    - docker.io/kindest/local-path-provisioner:v20260820-69b56db7
+    sizeBytes: 15868133
+  - names:
+    - docker.io/kindest/local-path-helper:v20260131-7181c60a
+    sizeBytes: 2872608
+  - names:
+    - registry.k8s.io/pause:3.10
+    sizeBytes: 320368
+  nodeInfo:
+    architecture: amd64
+    bootID: b93fd08e-f817-4655-aac3-f2a10e9cf232
+    containerRuntimeVersion: containerd://2.3.4
+    kernelVersion: 6.18.54.1-microsoft-standard-WSL2
+    kubeProxyVersion: ""
+    kubeletVersion: v1.37.0
+    machineID: 4474d17acac44489bc04208544370b9e
+    operatingSystem: linux
+    osImage: Debian GNU/Linux 13 (trixie)
+    runningInUserNamespace: false
+    swap:
+      capacity: 8589934592
+    systemUUID: 4474d17acac44489bc04208544370b9e
+  runtimeHandlers:
+  - features:
+      recursiveReadOnlyMounts: true
+      userNamespaces: true
+    name: ""
+  - features:
+      recursiveReadOnlyMounts: true
+      userNamespaces: true
+    name: runc
+  - features:
+      recursiveReadOnlyMounts: true
+      userNamespaces: true
+    name: test-handler

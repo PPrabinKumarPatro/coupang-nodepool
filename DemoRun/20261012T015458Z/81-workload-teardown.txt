@@ -1,0 +1,1 @@
+deployment.apps "manual-workload" deleted from manual-demo namespace

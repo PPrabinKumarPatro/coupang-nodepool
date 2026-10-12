@@ -1,0 +1,4 @@
+NAME                                    STATUS                        ROLES           AGE   VERSION
+coupang-nodepool-manual-control-plane   Ready                         control-plane   10m   v1.37.0
+coupang-nodepool-manual-worker          NotReady,SchedulingDisabled   <none>          10m   v1.37.0
+coupang-nodepool-manual-worker2         Ready                         <none>          10m   v1.37.0

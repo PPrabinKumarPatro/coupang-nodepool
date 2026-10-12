@@ -1,0 +1,1 @@
+nodepool.nodes.example.com "manual-pool" deleted

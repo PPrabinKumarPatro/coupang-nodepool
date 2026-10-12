@@ -1,0 +1,16 @@
+NAMESPACE   LAST SEEN   TYPE      REASON             OBJECT                 MESSAGE
+default     6m36s       Normal    NoMembers          nodepool/manual-pool   Ready: No member Nodes were observed
+default     6m36s       Normal    Stable             nodepool/manual-pool   Progressing: No lifecycle work is pending
+default     6m36s       Normal    NoFailure          nodepool/manual-pool   Failed: No reconciliation failure or safety blocker
+default     6m26s       Normal    NodeReady          nodepool/manual-pool   Node coupang-nodepool-manual-worker (153556e3-d868-416d-ade6-a2a44b16e755): Ready;
+default     6m26s       Normal    MembersReady       nodepool/manual-pool   Ready: All observed members report Ready=True
+default     4m1s        Normal    GracePeriod        nodepool/manual-pool   Node coupang-nodepool-manual-worker (153556e3-d868-416d-ade6-a2a44b16e755): NotReady;
+default     4m1s        Normal    MembersNotReady    nodepool/manual-pool   Ready: At least one member lacks Ready=True
+default     4m1s        Normal    Reconciling        nodepool/manual-pool   Progressing: Lifecycle work is pending
+default     3m46s       Normal    DrainStarted       nodepool/manual-pool   Node coupang-nodepool-manual-worker (153556e3-d868-416d-ade6-a2a44b16e755): Draining;
+default     3m46s       Normal    NodeCordoned       nodepool/manual-pool   Cordoned Node coupang-nodepool-manual-worker
+default     3m46s       Normal    NodeCordoned       nodepool/manual-pool   Node coupang-nodepool-manual-worker (153556e3-d868-416d-ade6-a2a44b16e755): Draining;
+default     3m35s       Warning   EvictionBlocked    nodepool/manual-pool   Node coupang-nodepool-manual-worker (153556e3-d868-416d-ade6-a2a44b16e755): Draining; Eviction refused or throttled; disruption budgets are not bypassed: Cannot evict pod as it would violate the pod's disruption budget.
+default     3m35s       Normal    Blocked            nodepool/manual-pool   Progressing: Lifecycle work is blocked; safety constraints are not bypassed
+default     3m35s       Warning   LifecycleBlocked   nodepool/manual-pool   Failed: coupang-nodepool-manual-worker: EvictionBlocked: Eviction refused or throttled; disruption budgets are not bypassed: Cannot evict pod as it would violate the pod's disruption budget.
+default     101s        Warning   DrainTimedOut      nodepool/manual-pool   Node coupang-nodepool-manual-worker (153556e3-d868-416d-ade6-a2a44b16e755): Draining; 1 Pods still present; no force deletion; resolve blockers or cancel removal

@@ -1,0 +1,1 @@
+pod "untolerated-demo" deleted from nodepool-demo namespace

@@ -1,0 +1,4 @@
+NAME                        STATUS   ROLES           AGE   VERSION   INTERNAL-IP      EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION              CONTAINER-RUNTIME
+coupang-lab-control-plane   Ready    control-plane   32h   v1.37.0   172.24.109.47    <none>        Ubuntu 24.04.5 LTS   6.8.0-142-generic (amd64)   containerd://2.2.6
+coupang-lab-worker-1        Ready    worker          32h   v1.37.0   172.24.108.200   <none>        Ubuntu 24.04.5 LTS   6.8.0-142-generic (amd64)   containerd://2.2.6
+coupang-lab-worker-2        Ready    worker          32h   v1.37.0   172.24.105.98    <none>        Ubuntu 24.04.5 LTS   6.8.0-142-generic (amd64)   containerd://2.2.6

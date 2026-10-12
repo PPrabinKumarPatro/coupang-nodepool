@@ -1,0 +1,2 @@
+NAME                                                   NODE                                    IMAGE                             IMAGEID                                                                                                       READY
+coupang-nodepool-controller-manager-7f6f6ddb89-vnvc9   coupang-nodepool-manual-control-plane   coupang-nodepool:final-20261011   docker.io/library/import-2026-10-12@sha256:a98574af48dfda2eeac9408918980f71b07f1cff707935f563514bddc3714c71   true

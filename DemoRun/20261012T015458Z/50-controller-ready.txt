@@ -1,0 +1,1 @@
+deployment "coupang-nodepool-controller-manager" successfully rolled out

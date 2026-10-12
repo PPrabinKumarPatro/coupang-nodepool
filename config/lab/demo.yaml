@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nodepool-demo
+---
+apiVersion: nodes.example.com/v1alpha1
+kind: NodePool
+metadata:
+  name: lab-demo
+spec:
+  image: informational-no-provisioning
+  labels:
+    workload: nodepool-demo
+  taints:
+  - key: nodes.example.com/demo
+    value: lab
+    effect: NoSchedule
+  unreadyPolicy:
+    action: Ignore
+    gracePeriod: 60s
+    drainTimeout: 120s
+    maxConcurrentRemovals: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scheduling-demo
+  namespace: nodepool-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: scheduling-demo
+  template:
+    metadata:
+      labels:
+        app: scheduling-demo
+    spec:
+      nodeSelector:
+        nodes.example.com/nodepool: lab-demo
+      tolerations:
+      - key: nodes.example.com/demo
+        operator: Equal
+        value: lab
+        effect: NoSchedule
+      topologySpreadConstraints:
+      - maxSkew: 1
+        minDomains: 2
+        matchLabelKeys:
+        - pod-template-hash
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: scheduling-demo
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: pause
+        image: registry.k8s.io/pause:3.10.2
+        imagePullPolicy: Never
+        resources:
+          requests:
+            cpu: 10m
+            memory: 8Mi
+          limits:
+            cpu: 50m
+            memory: 16Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: ["ALL"]
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: scheduling-demo
+  namespace: nodepool-demo
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: scheduling-demo

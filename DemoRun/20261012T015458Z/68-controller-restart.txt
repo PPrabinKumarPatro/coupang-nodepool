@@ -1,0 +1,1 @@
+deployment.apps/coupang-nodepool-controller-manager restarted

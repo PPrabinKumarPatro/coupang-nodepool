@@ -1,0 +1,2 @@
+NAME                             UID                                    UNSCHEDULABLE
+coupang-nodepool-manual-worker   153556e3-d868-416d-ade6-a2a44b16e755   <none>

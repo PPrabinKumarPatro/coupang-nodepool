@@ -1,0 +1,15 @@
+
+=== Existing kind clusters ===
+coupang
+
+=== Docker resources ===
+CPUs=16 MemoryBytes=33629810688
+
+=== Cached Kubernetes image ===
+sha256:a1ed56cfb0e7b93589bdf97c8cd566405a265939e3620fc4f5de89adff580ae5
+
+=== Cached controller image ===
+sha256:4f11c1871d9ca826d1bdff90aba46c65fde74fac2e4d52f3272f484f4b2b5a08
+
+=== Global default context ===
+kind-coupang

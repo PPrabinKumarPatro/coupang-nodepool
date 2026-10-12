@@ -1,0 +1,30 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"policy/v1","kind":"PodDisruptionBudget","metadata":{"annotations":{},"name":"scheduling-demo","namespace":"nodepool-demo"},"spec":{"minAvailable":1,"selector":{"matchLabels":{"app":"scheduling-demo"}}}}
+  creationTimestamp: "2026-10-11T23:33:29Z"
+  generation: 1
+  name: scheduling-demo
+  namespace: nodepool-demo
+  resourceVersion: "114126"
+  uid: 58d6d879-63a6-42db-bdb9-8b4b3a0fad32
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: scheduling-demo
+status:
+  conditions:
+  - lastTransitionTime: "2026-10-11T23:33:32Z"
+    message: ""
+    observedGeneration: 1
+    reason: SufficientPods
+    status: "True"
+    type: DisruptionAllowed
+  currentHealthy: 2
+  desiredHealthy: 1
+  disruptionsAllowed: 1
+  expectedPods: 2
+  observedGeneration: 1

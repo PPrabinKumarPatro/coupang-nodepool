@@ -1,0 +1,3 @@
+NAME                                 STATUS   ROLES           AGE     VERSION
+coupang-nodepool-e2e-control-plane   Ready    control-plane   3m5s    v1.37.0
+coupang-nodepool-e2e-worker2         Ready    <none>          2m50s   v1.37.0

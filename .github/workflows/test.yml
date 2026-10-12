@@ -1,0 +1,47 @@
+name: Unit and API integration tests
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - id: versions
+        run: |
+          source hack/versions.env
+          echo "go=$GO_VERSION" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
+        with:
+          go-version: ${{ steps.versions.outputs.go }}
+      - name: Fetch and verify declared dependencies
+        run: go mod download && go mod verify
+      - name: Prepare pinned envtest and generator
+        run: |
+          source hack/versions.env
+          echo "KUBEBUILDER_ASSETS=$(bash hack/envtest-assets.sh)" >> "$GITHUB_ENV"
+          GOBIN="$PWD/bin" go install "sigs.k8s.io/controller-tools/cmd/controller-gen@$CONTROLLER_GEN_VERSION"
+      - name: Check generated artifacts
+        run: |
+          make generate manifests
+          git diff --exit-code -- api/v1alpha1/zz_generated.deepcopy.go config/crd/bases config/rbac/role.yaml
+      - name: Build and race-enabled tests
+        run: |
+          mkdir -p artifacts
+          make build test 2>&1 | tee artifacts/unit-tests.log
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: unit-test-evidence
+          path: artifacts/unit-tests.log
+          if-no-files-found: warn
+          retention-days: 7

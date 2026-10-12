@@ -1,0 +1,2 @@
+NAME       GENERATION   OBSERVED   READY   ACTION
+lab-demo   3            3          2       Ignore

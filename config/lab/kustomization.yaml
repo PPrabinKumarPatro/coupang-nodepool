@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../e2e
+images:
+- name: coupang-nodepool
+  newName: coupang-nodepool
+  newTag: final-20261011
