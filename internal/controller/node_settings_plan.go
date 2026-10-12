@@ -24,6 +24,8 @@ type nodeSettingsOwnership struct {
 // planNodeSettings returns an independent Node copy.
 // It makes no Kubernetes API calls.
 // Empty desired settings clean up this pool UID's ownership.
+// Comparing desired, live and last-written values avoids treating every
+// matching label or taint as something this controller owns.
 func planNodeSettings(
 	node *corev1.Node,
 	poolUID types.
@@ -50,6 +52,7 @@ func planNodeSettings(
 		if err := nodeSettingsDecode(raw, &old); err != nil {
 			return nil, fmt.Errorf("ownership annotation: %w", err)
 		}
+		// Pool names can be reused; only the original UID may clean this record.
 		if old.PoolUID != poolUID {
 			return nil, fmt.Errorf("ownership annotation has a different or missing pool UID")
 		}
@@ -76,6 +79,8 @@ func planNodeSettings(
 		value, exists := out.Labels[key]
 		want, needed := desiredLabels[key]
 
+		// Do not undo external edits: report a conflict if still desired,
+		// otherwise preserve the value and omit it from the next ownership record.
 		if owned && exists && value != previous {
 			if needed {
 				return nil, fmt.Errorf("owned label %q changed externally", key)
@@ -88,6 +93,7 @@ func planNodeSettings(
 			}
 			continue
 		}
+		// A preexisting matching value remains unowned, so cleanup preserves it.
 		if exists && !owned {
 			if value != want {
 				return nil, fmt.Errorf("unowned label %q conflicts", key)
@@ -109,6 +115,8 @@ func planNodeSettings(
 		value, exists := current[id]
 		want, needed := wanted[id]
 
+		// A timeAdded value also counts as an external change: this planner
+		// never sets it, even when managing a NoExecute taint.
 		if owned && exists &&
 			(value.Value != previous.Value || value.TimeAdded != nil) {
 			if needed {
@@ -239,6 +247,8 @@ func nodeSettingsKeys[V any](a, b map[string]V) []string {
 }
 
 // Reject duplicate keys, unknown fields, trailing JSON and deep nesting.
+// encoding/json normally accepts duplicate keys; ambiguous ownership must
+// not decide which live settings the controller is allowed to remove.
 func nodeSettingsDecode(raw string, record *nodeSettingsOwnership) error {
 	decoder := json.NewDecoder(strings.NewReader(raw))
 	var walk func(int) error

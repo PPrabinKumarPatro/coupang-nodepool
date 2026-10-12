@@ -29,10 +29,18 @@ The script refuses an existing cluster of the same name and verifies ownership
 before deletion. It creates a private kubeconfig without changing the default
 context. Kubeconfig contents are not included; command logs retain its local path.
 
-Verify the recorded bytes from the repository root:
+Verify the recorded output files from the repository root:
 
 ```bash
 (cd E2ERun && sha256sum -c SHA256SUMS)
+```
+
+Source checksums refer to the [recorded source snapshot](https://github.com/PPrabinKumarPatro/coupang-nodepool/tree/4f911d45b4be2d01a5ad9861eef39138008a9c5f),
+not later revisions. Run the source check below from that snapshot; even
+comment-only changes alter a file's checksum. The original hashes are retained
+instead of presenting later edits as part of the recorded test run.
+
+```bash
 sha256sum -c E2ERun/SOURCE-SHA256SUMS
 ```
 

@@ -98,6 +98,8 @@ func protectedNode(node *corev1.Node) bool {
 	return false
 }
 
+// Plan status without changing Nodes. The caller must persist these removal
+// reservations before advanceNode is allowed to cordon, evict or delete.
 func planLifecycle(pool *nodesv1alpha1.NodePool, members []corev1.Node,
 	policy lifecyclePolicy, now time.Time, allowActions bool, settingsFailures map[string]error,
 ) ([]nodesv1alpha1.NodePoolNodeStatus, int32) {
@@ -182,6 +184,8 @@ func planLifecycle(pool *nodesv1alpha1.NodePool, members []corev1.Node,
 			active++
 		}
 		if failure := settingsFailures[node.Name]; failure != nil {
+			// A failed member gets no new slot, but an active removal keeps its
+			// reservation and deadline; an error must not grant extra capacity.
 			if pool.Spec.UnreadyPolicy.Action == "Remove" && !nodeIsReady(node) &&
 				isRemovalPhase(old.Phase) && !isRemovalPhase(state.Phase) {
 				state.Phase = old.Phase
@@ -194,7 +198,8 @@ func planLifecycle(pool *nodesv1alpha1.NodePool, members []corev1.Node,
 		}
 		states = append(states, state)
 	}
-	// Preserve in-flight reservations first, even after a limit reduction.
+	// Admit new removals oldest-first, with stable name-based tie-breaking.
+	// Active slots were counted above and survive a reduction of the limit.
 	sort.Slice(states, func(i, j int) bool {
 		a, b := states[i], states[j]
 		if (a.NotReadySince == nil) != (b.NotReadySince == nil) {
@@ -267,6 +272,8 @@ func (r *NodePoolReconciler) reconcileLivePool(
 			memberErr = errors.Join(memberErr, fmt.Errorf("advance Node %q (%s): %w", state.Name, state.UID, err))
 		}
 	}
+	// Acknowledge processing, not universal health: handled safety blockers
+	// may remain, but actual pool/member errors must not acknowledge a new spec.
 	if poolErr == nil && memberErr == nil {
 		desired.Status.ObservedGeneration = pool.Generation
 	}
@@ -277,6 +284,8 @@ func (r *NodePoolReconciler) reconcileLivePool(
 	if poolErr != nil || memberErr != nil {
 		return ctrl.Result{}, errors.Join(poolErr, memberErr)
 	}
+	// PDB changes and elapsed deadlines may produce no watched Node/Pod event.
+	// Requeue instead of sleeping, leaving the worker free for other pools.
 	delay := lifecyclePollInterval
 	for _, state := range pool.Status.Nodes {
 		if (state.Reason == "GracePeriod" || state.Reason == "ReadinessGracePeriod") &&

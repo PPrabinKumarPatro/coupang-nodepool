@@ -54,6 +54,8 @@ func (r *NodePoolReconciler) cleanupNodeCordon(
 	return nil
 }
 
+// Recheck the persisted reservation and live Node before disruptive actions.
+// These reads reduce stale-state races, but are not a cross-object transaction.
 func (r *NodePoolReconciler) authorizedNode(
 	ctx context.Context, pool *nodesv1alpha1.NodePool, state *nodesv1alpha1.NodePoolNodeStatus,
 	policy lifecyclePolicy,
@@ -104,6 +106,8 @@ func (r *NodePoolReconciler) ensureCordon(
 		return false, fmt.Errorf("cordon belongs to another pool UID")
 	}
 	if node.Spec.Unschedulable {
+		// Do not claim a preexisting cordon: cleanup must not undo another
+		// actor's decision to keep the Node unschedulable.
 		return false, nil
 	}
 	if owner != "" {
@@ -186,8 +190,12 @@ func (r *NodePoolReconciler) advanceNode(
 		blockNode(state, reason, message)
 		return nil
 	}
+	// Accepted evictions may finish after the deadline. Completion is still
+	// allowed once no blocking Pods remain; only new evictions are timed out.
 	if len(pods) == 0 {
 		if state.Phase == "Draining" {
+			// Return so reconcileLivePool persists Removing before a later
+			// pass requests deletion. A restart can then resume that intent.
 			state.Phase, state.Reason, state.Message, state.Blocked = "Removing", "DrainComplete", "", false
 			return nil
 		}
@@ -199,6 +207,7 @@ func (r *NodePoolReconciler) advanceNode(
 			return fmt.Errorf("Node was uncordoned before deletion")
 		}
 		uid, version := node.UID, node.ResourceVersion
+		// Reject deletion of a same-name replacement or an intervening Node edit.
 		if err := r.Delete(ctx, node, &client.DeleteOptions{Preconditions: &metav1.Preconditions{
 			UID: &uid, ResourceVersion: &version,
 		}}); err != nil {
@@ -227,6 +236,8 @@ func (r *NodePoolReconciler) advanceNode(
 	for i := range pods {
 		pod := &pods[i]
 		if !pod.DeletionTimestamp.IsZero() {
+			// An accepted eviction is not completed shutdown. Wait for the
+			// Pod to disappear rather than re-evicting or force-deleting it.
 			continue
 		}
 		if !r.now().Before(state.DrainStartedAt.Add(policy.timeout)) {
@@ -280,6 +291,8 @@ func (r *NodePoolReconciler) drainPods(
 	var remaining []corev1.Pod
 	for i := range list.Items {
 		pod := &list.Items[i]
+		// Terminal phase alone is insufficient for an ordinary deleting Pod:
+		// finalizers may still hold cleanup, so keep it as a Node-deletion blocker.
 		if pod.DeletionTimestamp.IsZero() &&
 			(pod.Status.Phase == corev1.PodSucceeded || pod.Status.Phase == corev1.PodFailed) {
 			continue
@@ -291,6 +304,7 @@ func (r *NodePoolReconciler) drainPods(
 		if owner != nil && owner.Kind == "DaemonSet" && owner.APIVersion == "apps/v1" {
 			var daemonSet appsv1.DaemonSet
 			err := r.APIReader.Get(ctx, types.NamespacedName{Namespace: pod.Namespace, Name: owner.Name}, &daemonSet)
+			// A recreated same-name DaemonSet is not this Pod's original owner.
 			if apierrors.IsNotFound(err) || (err == nil && daemonSet.UID != owner.UID) {
 				return nil, "OrphanedDaemonSet", "Pod " + pod.Namespace + "/" + pod.Name + " has no matching DaemonSet; manual intervention required", nil
 			}
@@ -299,6 +313,8 @@ func (r *NodePoolReconciler) drainPods(
 			}
 			continue
 		}
+		// This is not a general rescheduling-safety check: ordinary owners are
+		// not fetched, and PVC/PV/CSI portability is not validated below.
 		if owner == nil || owner.UID == "" {
 			return nil, "UnmanagedPod", "Pod " + pod.Namespace + "/" + pod.Name + " is unmanaged; manual intervention required", nil
 		}

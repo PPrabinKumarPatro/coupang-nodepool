@@ -18,6 +18,8 @@ import (
 )
 
 func setLifecycleConditions(pool *nodesv1alpha1.NodePool, reconcileErr, memberErr error, observationFailed bool) {
+	// Ready reports observed Node health, not successful settings convergence
+	// or permission to disrupt those Nodes.
 	ready, readyReason, readyMessage := metav1.ConditionUnknown, "NoMembers", "No member Nodes were observed"
 	if len(pool.Status.Nodes) > 0 {
 		ready, readyReason, readyMessage = metav1.ConditionFalse, "MembersNotReady", "At least one member lacks Ready=True"
@@ -30,6 +32,8 @@ func setLifecycleConditions(pool *nodesv1alpha1.NodePool, reconcileErr, memberEr
 	}
 	progress, progressReason, progressMessage := metav1.ConditionFalse, "Stable", "No lifecycle work is pending"
 	failed, failedReason, failedMessage := metav1.ConditionFalse, "NoFailure", "No reconciliation failure or safety blocker"
+	// One blocked member can coexist with useful work on another, so Failed
+	// and Progressing are independent rather than mutually exclusive.
 	for _, state := range pool.Status.Nodes {
 		if state.Blocked {
 			failed, failedReason, failedMessage = metav1.ConditionTrue, "LifecycleBlocked", state.Name+": "+state.Reason+": "+state.Message
@@ -55,6 +59,8 @@ func setLifecycleConditions(pool *nodesv1alpha1.NodePool, reconcileErr, memberEr
 		{Type: "Progressing", Status: progress, Reason: progressReason, Message: progressMessage},
 		{Type: "Failed", Status: failed, Reason: failedReason, Message: failedMessage},
 	} {
+		// Conditions describe the current spec even when the top-level
+		// successful-processing observedGeneration cannot advance.
 		condition.ObservedGeneration = pool.Generation
 		meta.SetStatusCondition(&pool.Status.Conditions, condition)
 	}
@@ -73,6 +79,8 @@ func (r *NodePoolReconciler) persistPoolStatus(
 		return err
 	}
 	*pool = *desired
+	// Emit only after status is durable. Events are best-effort: a crash here
+	// can lose an Event, so recovery relies on status rather than Event history.
 	r.emitStatusTransitions(ctx, before, pool)
 	return nil
 }
@@ -115,6 +123,8 @@ func (r *NodePoolReconciler) emitStatusTransitions(
 	for _, state := range previous {
 		reason := "NodeLeftPool"
 		if state.Phase == "Removing" {
+			// Leaving the membership list is not proof of deletion. Confirm
+			// the old Node UID is gone before reporting NodeRemoved.
 			var node corev1.Node
 			err := r.APIReader.Get(ctx, types.NamespacedName{Name: state.Name}, &node)
 			switch {

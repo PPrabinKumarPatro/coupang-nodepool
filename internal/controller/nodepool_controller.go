@@ -66,6 +66,8 @@ func (r *NodePoolReconciler) Reconcile(
 	if err := r.APIReader.Get(ctx, req.NamespacedName, &pool); err != nil {
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
+	// Deleting a pool cleans up owned settings, not its machines or workloads.
+	// Keep the finalizer until eligible cleanup and its status update succeed.
 	if !pool.DeletionTimestamp.IsZero() {
 		if !controllerutil.ContainsFinalizer(&pool, nodeSettingsFinalizer) {
 			return ctrl.Result{}, nil
@@ -105,7 +107,8 @@ func (r *NodePoolReconciler) Reconcile(
 		)); err != nil {
 			return ctrl.Result{}, client.IgnoreNotFound(err)
 		}
-		// Never mutate Nodes in the pass that first persists the finalizer.
+		// Record cleanup responsibility before any Node mutation. A later pass
+		// rechecks the pool instead of acting on the pre-finalizer snapshot.
 		return ctrl.Result{RequeueAfter: time.Second}, nil
 	}
 	return r.reconcileLivePool(ctx, &pool)
@@ -129,6 +132,8 @@ func observeNode(
 		return current
 	}
 
+	// Reuse the saved clock for the same unhealthy interval, including after
+	// a restart. A replacement UID or changed transition starts fresh grace.
 	if !unreadyIntervalChanged(node.UID, current.ReadyTransitionTime, previous) {
 		current.NotReadySince = previous.NotReadySince.DeepCopy()
 	} else {
@@ -182,6 +187,8 @@ func nodeIsReady(node *corev1.Node) bool {
 }
 
 func (r *NodePoolReconciler) SetupWithManager(mgr ctrl.Manager) error {
+	// The mapping handler processes both old and new Nodes on an update:
+	// the former pool needs cleanup when the membership label changes.
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&nodesv1alpha1.NodePool{}).
 		Watches(

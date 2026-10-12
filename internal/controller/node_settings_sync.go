@@ -63,6 +63,8 @@ func (r *NodePoolReconciler) syncNodeSettings(
 			continue
 		}
 		if err := r.syncListedNodeSettings(ctx, pool, listed); err != nil {
+			// A changed pool invalidates the whole pass. Node-local failures
+			// are collected so other independent Nodes can still converge.
 			if isPoolScopeError(err) {
 				return failures, err
 			}
@@ -140,6 +142,8 @@ func (r *NodePoolReconciler) syncOneNodeSettings(
 	if err := r.checkSettingsPool(ctx, pool); err != nil {
 		return err
 	}
+	// The Node version check rejects intervening edits. Settings and their
+	// ownership record are written together, never as two separate requests.
 	if err := r.Patch(ctx, desired, client.MergeFromWithOptions(
 		node.DeepCopy(), client.MergeFromWithOptimisticLock{},
 	)); err != nil {
@@ -180,6 +184,8 @@ func nodeSettingsPreviouslyObserved(pool *nodesv1alpha1.NodePool, uid types.UID)
 	return false
 }
 
+// Retain departed Node UIDs across failed passes so unreadable ownership can
+// still be attributed to this pool after those Nodes leave the membership list.
 func pendingSettingsCleanup(
 	pool *nodesv1alpha1.NodePool, members []corev1.Node, incomplete bool,
 ) []nodesv1alpha1.NodePoolNodeReference {
