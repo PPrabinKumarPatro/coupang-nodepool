@@ -37,10 +37,15 @@ import (
 	nodesv1alpha1 "example.com/nodepool-controller/api/v1alpha1"
 )
 
+// Scenario walkthrough and flow diagrams:
+// /home/devuser/coupang-nodepool/CODE-WALKTHROUGH.md (Lessons 2, 4 and 6).
 const membershipLabel = "nodes.example.com/nodepool"
 
+// NodePoolReconciler holds shared clients and helpers, not a Node's workflow state.
+// Progress needed after a restart lives in Kubernetes objects and status.
 type NodePoolReconciler struct {
 	client.Client
+	// APIReader bypasses informer caches for fresh authorization and identity checks.
 	APIReader client.Reader
 	Scheme    *runtime.Scheme
 	Recorder  events.EventRecorder
@@ -59,6 +64,9 @@ type NodePoolReconciler struct {
 func (r *NodePoolReconciler) Reconcile(
 	ctx context.Context, req ctrl.Request,
 ) (ctrl.Result, error) {
+	// A request identifies a pool to inspect, not an event to replay.
+	// Each pass reads current state and chooses cleanup, finalizer registration,
+	// or normal reconciliation; no source-line position survives a restart.
 	// Watch events trigger work, but cached observations cannot authorize a
 	// destructive action; pool and Node checks use the uncached API reader.
 	if r.APIReader == nil {
@@ -66,6 +74,8 @@ func (r *NodePoolReconciler) Reconcile(
 	}
 	var pool nodesv1alpha1.NodePool
 	if err := r.APIReader.Get(ctx, req.NamespacedName, &pool); err != nil {
+		// A queued request can outlive its pool. Only NotFound is normal completion;
+		// authorization, connectivity and other API failures must still be retried.
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 	// Deleting a pool cleans up owned settings, not its machines or workloads.
@@ -75,13 +85,17 @@ func (r *NodePoolReconciler) Reconcile(
 			// Do not adopt cleanup responsibility after deletion has already started.
 			return ctrl.Result{}, nil
 		}
+		// This is settings/cordon cleanup, not the unhealthy-Node removal path.
+		// Pool-deletion cleanup skips unready Nodes under the assignment's rules.
 		failures, syncErr := r.syncNodeSettings(ctx, &pool)
 		if err := errors.Join(syncErr, joinNodeFailures(failures)); err != nil {
+			// Keep our finalizer when any required cleanup fails so a retry can resume.
 			return ctrl.Result{}, r.reportReconcileFailure(ctx, &pool, err)
 		}
 		desired := pool.DeepCopy()
 		desired.Status.PendingSettingsCleanup = nil
 		desired.Status.ObservedGeneration = pool.Generation
+		// CleanupComplete describes eligible cleanup, not the health of every Node.
 		for _, conditionType := range []string{"Failed", "Progressing"} {
 			meta.SetStatusCondition(&desired.Status.Conditions, metav1.Condition{
 				Type: conditionType, Status: metav1.ConditionFalse,
@@ -89,11 +103,14 @@ func (r *NodePoolReconciler) Reconcile(
 				ObservedGeneration: pool.Generation,
 			})
 		}
+		// Persist the outcome before releasing the finalizer can allow pool deletion.
 		if err := r.persistPoolStatus(ctx, &pool, desired); err != nil {
 			return ctrl.Result{}, err
 		}
 		desired = pool.DeepCopy()
+		// Remove only our finalizer; other controllers retain their cleanup obligations.
 		controllerutil.RemoveFinalizer(desired, nodeSettingsFinalizer)
+		// Optimistic locking rejects intervening changes rather than patching stale state.
 		if err := r.Patch(ctx, desired, client.MergeFromWithOptions(
 			pool.DeepCopy(), client.MergeFromWithOptimisticLock{},
 		)); err != nil {
@@ -114,14 +131,20 @@ func (r *NodePoolReconciler) Reconcile(
 		// rechecks the pool instead of acting on the pre-finalizer snapshot.
 		return ctrl.Result{RequeueAfter: time.Second}, nil
 	}
+	// Continue in node_lifecycle.go: plan and persist progress before executing
+	// eligible cordon, drain and removal actions.
 	return r.reconcileLivePool(ctx, &pool)
 }
 
+// observeNode only computes an observation; the lifecycle planner decides policy
+// and persists progress. Readiness alone does not authorize removal.
 func observeNode(
 	node *corev1.Node,
 	previous nodesv1alpha1.NodePoolNodeStatus,
 	now metav1.Time,
 ) nodesv1alpha1.NodePoolNodeStatus {
+	// Start fresh instead of copying stale phases, blockers or drain timestamps.
+	// planLifecycle selectively restores active reservations after observing health.
 	current := nodesv1alpha1.NodePoolNodeStatus{
 		Name:                node.Name,
 		UID:                 string(node.UID),
@@ -140,6 +163,8 @@ func observeNode(
 	if !unreadyIntervalChanged(node.UID, current.ReadyTransitionTime, previous) {
 		current.NotReadySince = previous.NotReadySince.DeepCopy()
 	} else {
+		// Begin grace when this interval is observed, not at an arbitrarily old
+		// Node timestamp that could make a newly discovered failure immediately eligible.
 		current.NotReadySince = now.DeepCopy()
 	}
 	if current.ReadyTransitionTime != nil &&
@@ -151,6 +176,8 @@ func observeNode(
 	return current
 }
 
+// Missing and zero timestamps provide no reliable transition baseline.
+// Copy the timestamp so status planning never aliases the input Node's condition.
 func nodeReadyTransition(node *corev1.Node) *metav1.Time {
 	for _, condition := range node.Status.Conditions {
 		if condition.Type == corev1.NodeReady {
@@ -163,6 +190,8 @@ func nodeReadyTransition(node *corev1.Node) *metav1.Time {
 	return nil
 }
 
+// Transition metadata can reveal a recovery between reconciles that we missed.
+// It is not a complete event history: unchanged timestamps cannot prove continuity.
 func unreadyIntervalChanged(
 	uid types.UID, transition *metav1.Time, previous nodesv1alpha1.NodePoolNodeStatus,
 ) bool {
@@ -180,6 +209,7 @@ func unreadyIntervalChanged(
 }
 
 func nodeIsReady(node *corev1.Node) bool {
+	// Consume Kubernetes' Ready condition; this does not ping or fence the machine.
 	for _, condition := range node.Status.Conditions {
 		if condition.Type == corev1.NodeReady {
 			return condition.Status == corev1.ConditionTrue
@@ -190,6 +220,8 @@ func nodeIsReady(node *corev1.Node) bool {
 }
 
 func (r *NodePoolReconciler) SetupWithManager(mgr ctrl.Manager) error {
+	// Pool spec changes, Node health/membership changes and Pod drain progress all
+	// enqueue pool reconciliation. These watches are not the recorded Kubernetes Events.
 	// The mapping handler processes both old and new Nodes on an update:
 	// the former pool needs cleanup when the membership label changes.
 	return ctrl.NewControllerManagedBy(mgr).
@@ -198,6 +230,7 @@ func (r *NodePoolReconciler) SetupWithManager(mgr ctrl.Manager) error {
 			&corev1.Node{},
 			handler.EnqueueRequestsFromMapFunc(memberPoolRequests),
 		).
+		// Pod changes can unblock an ongoing drain without a Node status change.
 		Watches(&corev1.Pod{}, handler.EnqueueRequestsFromMapFunc(r.podPoolRequests)).
 		Named("nodepool").
 		Complete(r)
@@ -206,6 +239,7 @@ func (r *NodePoolReconciler) SetupWithManager(mgr ctrl.Manager) error {
 func memberPoolRequests(
 	_ context.Context, object client.Object,
 ) []reconcile.Request {
+	// Enqueue the owning pool, not the Node: reconciliation plans across all members.
 	poolName := object.GetLabels()[membershipLabel]
 	if poolName == "" {
 		return nil

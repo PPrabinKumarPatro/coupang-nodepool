@@ -17,8 +17,11 @@ import (
 	nodesv1alpha1 "example.com/nodepool-controller/api/v1alpha1"
 )
 
+// Scenario walkthrough and flow diagrams:
+// /home/devuser/coupang-nodepool/CODE-WALKTHROUGH.md (Lessons 3 and 6).
 const nodeSettingsFinalizer = "nodes.example.com/settings-cleanup"
 
+// This error stops the whole pass, rather than blocking just one member.
 type poolScopeError struct {
 	cause error
 }
@@ -80,6 +83,7 @@ func (r *NodePoolReconciler) syncNodeSettings(
 func (r *NodePoolReconciler) syncListedNodeSettings(
 	ctx context.Context, pool *nodesv1alpha1.NodePool, listed *corev1.Node,
 ) error {
+	// The list selects candidates; this fresh read supplies the state used for writes.
 	var node corev1.Node
 	if err := r.APIReader.Get(ctx, types.NamespacedName{Name: listed.Name}, &node); err != nil {
 		if apierrors.IsNotFound(err) {
@@ -108,6 +112,7 @@ func (r *NodePoolReconciler) syncOneNodeSettings(
 		return nil
 	}
 	member := node.Labels[membershipLabel] == pool.Name
+	// Ownership follows the pool UID, so a recreated pool cannot claim old receipts.
 	owned, err := nodeSettingsOwnedBy(node, pool.UID)
 	if err != nil {
 		if member || nodeSettingsPreviouslyObserved(pool, node.UID) {
@@ -132,10 +137,12 @@ func (r *NodePoolReconciler) syncOneNodeSettings(
 	if protectedNode(node) && owned && len(labels)+len(taints) == 0 && !nodeIsReady(node) {
 		return fmt.Errorf("protected Node %q requires Ready=True before owned settings cleanup", node.Name)
 	}
+	// Keep ownership decisions in the planner; this layer handles reads and writes.
 	desired, err := planNodeSettings(node, pool.UID, labels, taints)
 	if err != nil {
 		return err
 	}
+	// Already-converged Nodes need no patch, avoiding needless conflicts and events.
 	if equality.Semantic.DeepEqual(node, desired) {
 		return nil
 	}
@@ -195,6 +202,7 @@ func pendingSettingsCleanup(
 	pool *nodesv1alpha1.NodePool, members []corev1.Node, incomplete bool,
 ) []nodesv1alpha1.NodePoolNodeReference {
 	if !incomplete {
+		// A complete synchronization pass no longer needs historical cleanup hints.
 		return nil
 	}
 	current := make(map[string]bool, len(members))
@@ -234,6 +242,7 @@ func (r *NodePoolReconciler) checkSettingsPool(
 	if err := r.APIReader.Get(ctx, client.ObjectKeyFromObject(expected), &current); err != nil {
 		return &poolScopeError{cause: fmt.Errorf("recheck NodePool before Node patch: %w", err)}
 	}
+	// Stop if identity, desired settings or cleanup authority changed since planning.
 	if current.UID != expected.UID ||
 		current.Generation != expected.Generation ||
 		!equality.Semantic.DeepEqual(current.Spec, expected.Spec) ||

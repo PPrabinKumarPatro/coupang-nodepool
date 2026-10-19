@@ -13,6 +13,8 @@ import (
 	"k8s.io/apimachinery/pkg/util/validation"
 )
 
+// Walkthrough: /home/devuser/coupang-nodepool/CODE-WALKTHROUGH.md
+// Lesson 3, especially "Ownership decision table", explains these scenarios.
 const nodeSettingsAnnotation = "nodes.example.com/managed-settings"
 
 // The Node carries this receipt even after membership changes. Pool status
@@ -28,6 +30,15 @@ type nodeSettingsOwnership struct {
 // Empty desired settings clean up this pool UID's ownership.
 // Comparing desired, live and last-written values avoids treating every
 // matching label or taint as something this controller owns.
+//
+// The three-way comparison follows the same rules for labels and taints:
+//   - Missing and desired: write it and record ownership.
+//   - Already matching but unowned: leave it alone without claiming it.
+//   - Owned and unchanged: update or remove it as the desired spec requires.
+//   - Externally changed: conflict if still desired; otherwise relinquish it.
+//
+// The caller rechecks pool authority and patches settings plus the receipt
+// together. An error here returns no partial plan for the caller to apply.
 func planNodeSettings(
 	node *corev1.Node,
 	poolUID types.
@@ -38,6 +49,7 @@ func planNodeSettings(
 	if node == nil || poolUID == "" {
 		return nil, fmt.Errorf("node and nonempty pool UID are required")
 	}
+	// Validate before planning: invalid desired input must not trigger even cleanup.
 	if err := nodeSettingsValidateLabels(desiredLabels); err != nil {
 		return nil, fmt.Errorf("desired labels: %w", err)
 	}
@@ -51,6 +63,8 @@ func planNodeSettings(
 		return nil, fmt.Errorf("protected Node %q cannot receive NodePool desired settings", node.Name)
 	}
 
+	// A missing receipt means no existing settings can be assumed to belong to us.
+	// A malformed or foreign receipt is different: fail rather than guess ownership.
 	var old nodeSettingsOwnership
 	if raw, found := node.Annotations[nodeSettingsAnnotation]; found {
 		if err := nodeSettingsDecode(raw, &old); err != nil {
@@ -69,16 +83,21 @@ func planNodeSettings(
 	if err != nil {
 		return nil, fmt.Errorf("owned taints: %w", err)
 	}
+	// Live taints may carry timeAdded from another actor; desired and owned taints
+	// may not. Keep that live metadata visible to the external-change check below.
 	current, err := nodeSettingsTaintMap(node.Spec.Taints, true)
 	if err != nil {
 		return nil, fmt.Errorf("current taints: %w", err)
 	}
 
+	// Only mutate this copy. If any later key conflicts, the input stays untouched.
+	// Rebuild the receipt from settings we still own instead of copying stale claims.
 	out := node.DeepCopy()
 	next := nodeSettingsOwnership{
 		PoolUID: poolUID,
 		Labels:  make(map[string]string),
 	}
+	// Visit both old and desired keys so removed spec entries get cleanup too.
 	for _, key := range nodeSettingsKeys(old.Labels, desiredLabels) {
 		previous, owned := old.Labels[key]
 		value, exists := out.Labels[key]
@@ -93,6 +112,7 @@ func planNodeSettings(
 			continue
 		}
 		if !needed {
+			// External edits were excluded above; only our unchanged value is removed.
 			if owned {
 				delete(out.Labels, key)
 			}
@@ -108,10 +128,13 @@ func planNodeSettings(
 		if out.Labels == nil {
 			out.Labels = make(map[string]string)
 		}
+		// An owned label missing from the live Node is restored when still desired.
 		out.Labels[key] = want
 		next.Labels[key] = want
 	}
 
+	// Taints use (key, effect) identity, not just key. Plan individual edits rather
+	// than replacing the whole list, which could discard unrelated scheduling rules.
 	nextTaints := make(map[string]corev1.Taint)
 	updates := make(map[string]corev1.Taint)
 	removals := make(map[string]bool)
@@ -131,25 +154,30 @@ func planNodeSettings(
 			continue
 		}
 		if !needed {
+			// Absence needs no deletion; either way, drop the old receipt entry.
 			if owned && exists {
 				removals[id] = true
 			}
 			continue
 		}
 		if exists && !owned {
+			// Matching someone else's taint satisfies the spec without becoming ours.
 			if value.Value != want.Value {
 				return nil, fmt.Errorf("unowned taint %q/%s conflicts",
 					want.Key, want.Effect)
 			}
 			continue
 		}
+		// Restore a missing owned taint or update its value, but avoid no-op list edits.
 		if !exists || value.Value != want.Value {
 			updates[id] = want
 		}
+		// Still-owned taints stay in the next receipt even when no live edit is needed.
 		nextTaints[id] = want
 	}
 
 	if len(updates)+len(removals) != 0 {
+		// Preserve the order and full contents of untouched live taints.
 		taints := make([]corev1.Taint, 0, len(out.Spec.Taints)+len(updates))
 		for _, value := range out.Spec.Taints {
 			id := nodeSettingsTaintID(value)
@@ -161,6 +189,8 @@ func planNodeSettings(
 			}
 			taints = append(taints, value)
 		}
+		// Existing entries were handled above; append only newly introduced identities.
+		// Sorted IDs make the result deterministic despite Go map iteration order.
 		for _, id := range nodeSettingsKeys(updates, nil) {
 			if _, exists := current[id]; !exists {
 				taints = append(taints, updates[id])
@@ -169,12 +199,15 @@ func planNodeSettings(
 		out.Spec.Taints = taints
 	}
 
+	// The receipt describes our writes, not every setting that matches the spec.
+	// A Node containing only preexisting matching settings needs no ownership receipt.
 	if len(next.Labels)+len(nextTaints) == 0 {
 		// With no owned settings left, release the receipt so another pool can claim.
 		delete(out.Annotations, nodeSettingsAnnotation)
 	} else if !maps.Equal(old.Labels, next.Labels) ||
 		!maps.Equal(ownedTaints, nextTaints) {
 		// Keep the annotation unchanged on no-op passes, including its JSON encoding.
+		// Otherwise serialize taints in stable identity order to avoid receipt churn.
 		for _, id := range nodeSettingsKeys(nextTaints, nil) {
 			next.Taints = append(next.Taints, nextTaints[id])
 		}
@@ -190,6 +223,8 @@ func planNodeSettings(
 	return out, nil
 }
 
+// Validate desired labels and historical receipts with the same restrictions:
+// settings must never change pool membership or administrative role protection.
 func nodeSettingsValidateLabels(labels map[string]string) error {
 	for _, key := range nodeSettingsKeys(labels, nil) {
 		if key == membershipLabel {
@@ -208,6 +243,8 @@ func nodeSettingsValidateLabels(labels map[string]string) error {
 	return nil
 }
 
+// Validate before indexing so duplicate identities cannot silently overwrite
+// each other. Only live Node taints are allowed to carry timeAdded.
 func nodeSettingsTaintMap(
 	taints []corev1.Taint, allowTimeAdded bool,
 ) (map[string]corev1.Taint, error) {
@@ -238,10 +275,13 @@ func nodeSettingsTaintMap(
 	return result, nil
 }
 
+// Value is mutable data, not identity: changing it updates the same taint.
+// NUL cannot occur in a validated key or effect, keeping the pair unambiguous.
 func nodeSettingsTaintID(taint corev1.Taint) string {
 	return taint.Key + "\x00" + string(taint.Effect)
 }
 
+// Return a sorted union for deterministic planning, cleanup and error selection.
 func nodeSettingsKeys[V any](a, b map[string]V) []string {
 	keys := make(map[string]struct{}, len(a)+len(b))
 	for key := range a {
@@ -257,6 +297,8 @@ func nodeSettingsKeys[V any](a, b map[string]V) []string {
 // encoding/json normally accepts duplicate keys; ambiguous ownership must
 // not decide which live settings the controller is allowed to remove.
 func nodeSettingsDecode(raw string, record *nodeSettingsOwnership) error {
+	// First inspect tokens: decoding straight into a struct would lose evidence
+	// of duplicate keys because encoding/json normally keeps the later value.
 	decoder := json.NewDecoder(strings.NewReader(raw))
 	var walk func(int) error
 	walk = func(depth int) error {
@@ -273,6 +315,7 @@ func nodeSettingsDecode(raw string, record *nodeSettingsOwnership) error {
 		}
 		switch delim {
 		case '{':
+			// Track keys per object, allowing the same field name in separate objects.
 			seen := make(map[string]bool)
 			for decoder.More() {
 				token, err := decoder.Token()
@@ -289,6 +332,7 @@ func nodeSettingsDecode(raw string, record *nodeSettingsOwnership) error {
 				}
 			}
 		case '[':
+			// Inspect every element too, including objects inside the taints array.
 			for decoder.More() {
 				if err := walk(depth + 1); err != nil {
 					return err
@@ -297,15 +341,19 @@ func nodeSettingsDecode(raw string, record *nodeSettingsOwnership) error {
 		default:
 			return fmt.Errorf("unexpected JSON delimiter")
 		}
+		// Consume the closing delimiter; the JSON decoder checks structural validity.
 		_, err = decoder.Token()
 		return err
 	}
 	if err := walk(0); err != nil {
 		return err
 	}
+	// Require exactly one JSON value, not a valid receipt followed by extra input.
 	if _, err := decoder.Token(); err != io.EOF {
 		return fmt.Errorf("trailing or invalid ownership JSON")
 	}
+	// Then decode into the typed receipt, rejecting unknown fields and wrong types.
+	// Schema-specific label/taint and pool-identity checks remain with the callers.
 	decoder = json.NewDecoder(strings.NewReader(raw))
 	decoder.DisallowUnknownFields()
 	return decoder.Decode(record)
