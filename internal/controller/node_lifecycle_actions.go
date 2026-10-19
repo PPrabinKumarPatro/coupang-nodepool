@@ -19,6 +19,9 @@ import (
 	nodesv1alpha1 "example.com/nodepool-controller/api/v1alpha1"
 )
 
+// Walkthrough: /home/devuser/coupang-nodepool/CODE-WALKTHROUGH.md
+// Lesson 5 and the combined source trace cover authorization, draining and removal.
+//
 // Cordon ownership is separate: lifecycle actions can run even when the pool
 // owns no labels or taints and therefore has no managed-settings receipt.
 const nodeCordonAnnotation = "nodes.example.com/cordon-owner"
@@ -26,6 +29,7 @@ const nodeCordonAnnotation = "nodes.example.com/cordon-owner"
 func (r *NodePoolReconciler) cleanupNodeCordon(
 	ctx context.Context, pool *nodesv1alpha1.NodePool, node *corev1.Node,
 ) error {
+	// Only undo this pool UID's cordon. A deleting Node is already past cancellation.
 	if node.Annotations[nodeCordonAnnotation] != string(pool.UID) || !node.DeletionTimestamp.IsZero() {
 		return nil
 	}
@@ -42,6 +46,8 @@ func (r *NodePoolReconciler) cleanupNodeCordon(
 		!nodeIsReady(node) && pool.Spec.UnreadyPolicy.Action != "Ignore" {
 		return nil
 	}
+	// Release the scheduling block and its receipt together; never leave a stale
+	// ownership claim that could authorize a later cleanup of someone else's cordon.
 	desired := node.DeepCopy()
 	desired.Spec.Unschedulable = false
 	delete(desired.Annotations, nodeCordonAnnotation)
@@ -53,6 +59,8 @@ func (r *NodePoolReconciler) cleanupNodeCordon(
 	)); err != nil {
 		return client.IgnoreNotFound(err)
 	}
+	// Settings synchronization continues with this same Node after cordon cleanup.
+	// Carry the patched object forward, including its new resource version.
 	*node = *desired
 	r.emit(ctx, pool, corev1.EventTypeNormal, "CordonReleased", "Released owned cordon on Node "+node.Name)
 	return nil
@@ -60,6 +68,8 @@ func (r *NodePoolReconciler) cleanupNodeCordon(
 
 // Recheck the persisted reservation and live Node before disruptive actions.
 // These reads reduce stale-state races, but are not a cross-object transaction.
+// Both the pool snapshot and Node identity must still match the planned work;
+// membership alone is never sufficient authorization for disruption.
 func (r *NodePoolReconciler) authorizedNode(
 	ctx context.Context, pool *nodesv1alpha1.NodePool, state *nodesv1alpha1.NodePoolNodeStatus,
 	policy lifecyclePolicy,
@@ -83,6 +93,7 @@ func (r *NodePoolReconciler) authorizedNode(
 		return nil, fmt.Errorf("Node identity or membership changed before lifecycle action")
 	}
 	if !node.DeletionTimestamp.IsZero() {
+		// An accepted deletion only needs observation; do not start another action.
 		return &node, nil
 	}
 	if nodeIsReady(&node) || protectedNode(&node) ||
@@ -93,6 +104,8 @@ func (r *NodePoolReconciler) authorizedNode(
 	if owner := node.Annotations[nodeCordonAnnotation]; owner != "" && owner != string(pool.UID) {
 		return nil, fmt.Errorf("Node cordon is owned by another pool UID")
 	}
+	// A present receipt must belong to us. Absence is allowed because lifecycle
+	// cordon ownership does not require the pool to manage any labels or taints.
 	if raw, exists := node.Annotations[nodeSettingsAnnotation]; exists {
 		owned, err := nodeSettingsOwnedBy(&node, pool.UID)
 		if err != nil || !owned {
@@ -102,6 +115,8 @@ func (r *NodePoolReconciler) authorizedNode(
 	return &node, nil
 }
 
+// The boolean reports a newly applied cordon, not whether the Node is cordoned.
+// advanceNode uses it to stop this pass and re-observe before draining.
 func (r *NodePoolReconciler) ensureCordon(
 	ctx context.Context, pool *nodesv1alpha1.NodePool, node *corev1.Node,
 ) (bool, error) {
@@ -115,6 +130,7 @@ func (r *NodePoolReconciler) ensureCordon(
 		return false, nil
 	}
 	if owner != "" {
+		// A receipt with an unset scheduling block indicates an external uncordon.
 		return false, fmt.Errorf("owned cordon was cleared externally; refusing to overwrite that change")
 	}
 	desired := node.DeepCopy()
@@ -132,17 +148,23 @@ func (r *NodePoolReconciler) ensureCordon(
 	return true, nil
 }
 
+// A safety blocker is a persisted outcome, not necessarily an API error.
+// Keep the phase and timers so retries cannot silently renew removal capacity.
 func blockNode(state *nodesv1alpha1.NodePoolNodeStatus, reason, message string) {
 	state.Blocked, state.Reason, state.Message = true, reason, message
 }
 
 func markNodeDeletionPending(state *nodesv1alpha1.NodePoolNodeStatus, node *corev1.Node) {
+	// Delete acceptance does not mean disappearance: other finalizers may still run.
 	state.Reason, state.Message, state.Blocked = "NodeDeletionPending", "Waiting for Node disappearance", false
 	if len(node.Finalizers) != 0 {
 		blockNode(state, "NodeFinalizersBlocked", "Waiting for Node finalizers; the controller never removes them")
 	}
 }
 
+// Execute eligible work from a previously persisted plan. Deliberate pass
+// boundaries separate cordoning, recording Removing and requesting deletion.
+// Repeated reconciles resume from observed state rather than replaying a script.
 func (r *NodePoolReconciler) advanceNode(
 	ctx context.Context, pool *nodesv1alpha1.NodePool, state *nodesv1alpha1.NodePoolNodeStatus,
 	policy lifecyclePolicy,
@@ -150,11 +172,14 @@ func (r *NodePoolReconciler) advanceNode(
 	if state.Reason == "ProtectedNode" {
 		return nil
 	}
+	// Cordon-only policy never enters the drain/removal phases.
 	cordon := pool.Spec.UnreadyPolicy.Action == "Cordon" && state.Phase == "NotReady" &&
 		state.Reason != "GracePeriod" && state.Reason != "ProtectedNode" && state.Reason != "ClockSkew"
 	if !cordon && !isRemovalPhase(state.Phase) {
 		return nil
 	}
+	// Existing removals can retain a slot while waiting through a new readiness
+	// grace interval; retaining the phase must not bypass that wait.
 	if state.NotReadySince != nil && r.now().Before(state.NotReadySince.Add(policy.grace)) {
 		return nil
 	}
@@ -191,6 +216,8 @@ func (r *NodePoolReconciler) advanceNode(
 		return err
 	}
 	if reason != "" {
+		// Classification blockers require intervention, not eviction retries that
+		// bypass the rule. Other pool members can still progress independently.
 		blockNode(state, reason, message)
 		return nil
 	}
@@ -203,6 +230,7 @@ func (r *NodePoolReconciler) advanceNode(
 			state.Phase, state.Reason, state.Message, state.Blocked = "Removing", "DrainComplete", "", false
 			return nil
 		}
+		// Recheck after listing Pods: the pool or Node may have changed meanwhile.
 		node, err = r.authorizedNode(ctx, pool, state, policy)
 		if err != nil {
 			return client.IgnoreNotFound(err)
@@ -230,6 +258,8 @@ func (r *NodePoolReconciler) advanceNode(
 		blockNode(state, "ClockSkew", "Missing or future drain timestamp; refusing eviction")
 		return nil
 	}
+	// Upward whole-second rounding can place the saved start slightly in the future.
+	// Wait for it instead of initiating evictions before the recorded start.
 	if state.DrainStartedAt.After(r.now()) {
 		return nil
 	}
@@ -256,6 +286,7 @@ func (r *NodePoolReconciler) advanceNode(
 		if !currentNode.Spec.Unschedulable || !currentNode.DeletionTimestamp.IsZero() {
 			return fmt.Errorf("Node was uncordoned or deleted before eviction")
 		}
+		// Bind eviction to the listed Pod instance and version, not just its name.
 		uid, version := pod.UID, pod.ResourceVersion
 		eviction := &policyv1.Eviction{
 			ObjectMeta: metav1.ObjectMeta{Name: pod.Name, Namespace: pod.Namespace},
@@ -269,6 +300,8 @@ func (r *NodePoolReconciler) advanceNode(
 		}
 		// Authorization itself can consume the remaining budget, hence the
 		// second deadline check immediately before this eviction request.
+		// Use the eviction subresource so Kubernetes enforces disruption budgets;
+		// ordinary Pod deletion would bypass that admission path.
 		err = r.SubResource("eviction").Create(ctx, pod, eviction)
 		if apierrors.IsNotFound(err) {
 			continue
@@ -284,6 +317,8 @@ func (r *NodePoolReconciler) advanceNode(
 	return nil
 }
 
+// Classify before evicting: return eligible remaining Pods, a safety blocker,
+// or an API error. This function itself never mutates or evicts a Pod.
 func (r *NodePoolReconciler) drainPods(
 	ctx context.Context, nodeName string,
 ) ([]corev1.Pod, string, string, error) {
@@ -291,6 +326,7 @@ func (r *NodePoolReconciler) drainPods(
 	if err := r.APIReader.List(ctx, &list, client.MatchingFields{"spec.nodeName": nodeName}); err != nil {
 		return nil, "", "", err
 	}
+	// Stable order makes the first reported blocker and eviction order reproducible.
 	sort.Slice(list.Items, func(i, j int) bool {
 		a, b := list.Items[i], list.Items[j]
 		return a.Namespace+"/"+a.Name < b.Namespace+"/"+b.Name
@@ -308,6 +344,8 @@ func (r *NodePoolReconciler) drainPods(
 			// Deleting the API mirror would not stop the kubelet-managed static workload.
 			continue
 		}
+		// DaemonSet Pods are excluded only after verifying their actual owner UID.
+		// A kind/name reference alone must not hide an orphaned workload.
 		owner := metav1.GetControllerOf(pod)
 		if owner != nil && owner.Kind == "DaemonSet" && owner.APIVersion == "apps/v1" {
 			var daemonSet appsv1.DaemonSet
@@ -327,6 +365,8 @@ func (r *NodePoolReconciler) drainPods(
 			return nil, "UnmanagedPod", "Pod " + pod.Namespace + "/" + pod.Name + " is unmanaged; manual intervention required", nil
 		}
 		for _, volume := range pod.Spec.Volumes {
+			// These explicit local-storage types block automatic eviction. This is
+			// intentionally not a claim that every other volume is safe to relocate.
 			if volume.EmptyDir != nil || volume.HostPath != nil {
 				return nil, "LocalStoragePod", "Pod " + pod.Namespace + "/" + pod.Name + " uses local storage; manual intervention required", nil
 			}
@@ -336,6 +376,8 @@ func (r *NodePoolReconciler) drainPods(
 	return remaining, "", "", nil
 }
 
+// Follow Pod -> assigned Node -> membership label because Pods do not carry the
+// pool's membership contract. Unscheduled Pods have no Node lifecycle to unblock.
 func (r *NodePoolReconciler) podPoolRequests(ctx context.Context, object client.Object) []reconcile.Request {
 	pod, ok := object.(*corev1.Pod)
 	if !ok || pod.Spec.NodeName == "" {

@@ -17,6 +17,11 @@ import (
 	nodesv1alpha1 "example.com/nodepool-controller/api/v1alpha1"
 )
 
+// Walkthrough: /home/devuser/coupang-nodepool/CODE-WALKTHROUGH.md (Lesson 6).
+// Status is durable recovery state; Events explain transitions but do not drive them.
+
+// Summarize health, pending work and failures separately: Ready=True does not
+// imply settings convergence, and Failed=True need not stop independent members.
 func setLifecycleConditions(pool *nodesv1alpha1.NodePool, reconcileErr, memberErr error, observationFailed bool) {
 	// Ready reports observed Node health, not successful settings convergence
 	// or permission to disrupt those Nodes.
@@ -29,6 +34,7 @@ func setLifecycleConditions(pool *nodesv1alpha1.NodePool, reconcileErr, memberEr
 		}
 	}
 	if observationFailed {
+		// Preserve stored member history without presenting it as fresh health evidence.
 		ready, readyReason, readyMessage = metav1.ConditionUnknown, "ObservationFailed", "Unable to refresh member health"
 	}
 	progress, progressReason, progressMessage := metav1.ConditionFalse, "Stable", "No lifecycle work is pending"
@@ -57,6 +63,8 @@ func setLifecycleConditions(pool *nodesv1alpha1.NodePool, reconcileErr, memberEr
 			progressReason, progressMessage = "Blocked", "Retrying failed members; no other lifecycle work is progressing"
 		}
 	}
+	// SetStatusCondition preserves transition time when a condition's status is
+	// unchanged, avoiding a new apparent health transition on every reconciliation.
 	for _, condition := range []metav1.Condition{
 		{Type: "Ready", Status: ready, Reason: readyReason, Message: readyMessage},
 		{Type: "Progressing", Status: progress, Reason: progressReason, Message: progressMessage},
@@ -69,6 +77,8 @@ func setLifecycleConditions(pool *nodesv1alpha1.NodePool, reconcileErr, memberEr
 	}
 }
 
+// Save status with optimistic locking, then refresh the caller's snapshot.
+// A rejected write must not authorize lifecycle execution from an unsaved plan.
 func (r *NodePoolReconciler) persistPoolStatus(
 	ctx context.Context, pool, desired *nodesv1alpha1.NodePool,
 ) error {
@@ -91,6 +101,8 @@ func (r *NodePoolReconciler) persistPoolStatus(
 	return nil
 }
 
+// Keep the original failure even if reporting it also fails; callers need both
+// causes rather than a successful-looking status update masking the real error.
 func (r *NodePoolReconciler) reportReconcileFailure(
 	ctx context.Context, pool *nodesv1alpha1.NodePool, failure error,
 ) error {
@@ -100,6 +112,7 @@ func (r *NodePoolReconciler) reportReconcileFailure(
 }
 
 func (r *NodePoolReconciler) emit(ctx context.Context, pool *nodesv1alpha1.NodePool, eventType, reason, message string) {
+	// Structured logging remains available when no Event recorder is configured.
 	log.FromContext(ctx).Info("NodePool transition", "pool", pool.Name, "reason", reason, "message", message)
 	if r.Recorder != nil {
 		r.Recorder.Eventf(pool, nil, eventType, reason, "Reconcile", "%s", message)
@@ -109,13 +122,16 @@ func (r *NodePoolReconciler) emit(ctx context.Context, pool *nodesv1alpha1.NodeP
 func (r *NodePoolReconciler) emitStatusTransitions(
 	ctx context.Context, before, after *nodesv1alpha1.NodePool,
 ) {
+	// Names can be reused; correlate transitions by the Node's immutable identity.
 	previous := make(map[string]nodesv1alpha1.NodePoolNodeStatus)
 	for _, state := range before.Status.Nodes {
 		previous[state.UID] = state
 	}
 	for _, state := range after.Status.Nodes {
 		old, exists := previous[state.UID]
+		// Unmatched old entries below represent Nodes no longer in the status list.
 		delete(previous, state.UID)
+		// Message-only changes do not create repeated member transition Events.
 		if exists && old.Phase == state.Phase && old.Reason == state.Reason && old.Blocked == state.Blocked {
 			continue
 		}
