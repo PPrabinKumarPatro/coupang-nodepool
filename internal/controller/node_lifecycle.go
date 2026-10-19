@@ -16,8 +16,6 @@ import (
 	nodesv1alpha1 "example.com/nodepool-controller/api/v1alpha1"
 )
 
-// Scenario walkthrough and flow diagrams:
-// /home/devuser/coupang-nodepool/CODE-WALKTHROUGH.md (Lessons 4 and 5, combined source trace).
 const (
 	lifecyclePollInterval = 10 * time.Second
 	controlPlaneRoleLabel = "node-role.kubernetes.io/control-plane"

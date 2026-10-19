@@ -13,8 +13,6 @@ import (
 	"k8s.io/apimachinery/pkg/util/validation"
 )
 
-// Walkthrough: /home/devuser/coupang-nodepool/CODE-WALKTHROUGH.md
-// Lesson 3, especially "Ownership decision table", explains these scenarios.
 const nodeSettingsAnnotation = "nodes.example.com/managed-settings"
 
 // The Node carries this receipt even after membership changes. Pool status

@@ -37,8 +37,6 @@ import (
 	nodesv1alpha1 "example.com/nodepool-controller/api/v1alpha1"
 )
 
-// Scenario walkthrough and flow diagrams:
-// /home/devuser/coupang-nodepool/CODE-WALKTHROUGH.md (Lessons 2, 4 and 6).
 const membershipLabel = "nodes.example.com/nodepool"
 
 // NodePoolReconciler holds shared clients and helpers, not a Node's workflow state.
@@ -86,7 +84,7 @@ func (r *NodePoolReconciler) Reconcile(
 			return ctrl.Result{}, nil
 		}
 		// This is settings/cordon cleanup, not the unhealthy-Node removal path.
-		// Pool-deletion cleanup skips unready Nodes under the assignment's rules.
+		// Pool-deletion cleanup skips unready Nodes.
 		failures, syncErr := r.syncNodeSettings(ctx, &pool)
 		if err := errors.Join(syncErr, joinNodeFailures(failures)); err != nil {
 			// Keep our finalizer when any required cleanup fails so a retry can resume.

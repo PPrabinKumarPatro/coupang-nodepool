@@ -17,8 +17,6 @@ import (
 	nodesv1alpha1 "example.com/nodepool-controller/api/v1alpha1"
 )
 
-// Scenario walkthrough and flow diagrams:
-// /home/devuser/coupang-nodepool/CODE-WALKTHROUGH.md (Lessons 3 and 6).
 const nodeSettingsFinalizer = "nodes.example.com/settings-cleanup"
 
 // This error stops the whole pass, rather than blocking just one member.
@@ -107,7 +105,7 @@ func (r *NodePoolReconciler) syncOneNodeSettings(
 	ctx context.Context, pool *nodesv1alpha1.NodePool, node *corev1.Node,
 ) error {
 	deleting := !pool.DeletionTimestamp.IsZero()
-	// The assignment limits pool-deletion cleanup to still-Ready Nodes.
+	// Pool-deletion cleanup only applies to Nodes with Ready=True.
 	if deleting && !nodeIsReady(node) {
 		return nil
 	}

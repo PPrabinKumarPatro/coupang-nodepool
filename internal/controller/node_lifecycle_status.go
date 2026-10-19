@@ -17,7 +17,6 @@ import (
 	nodesv1alpha1 "example.com/nodepool-controller/api/v1alpha1"
 )
 
-// Walkthrough: /home/devuser/coupang-nodepool/CODE-WALKTHROUGH.md (Lesson 6).
 // Status is durable recovery state; Events explain transitions but do not drive them.
 
 // Summarize health, pending work and failures separately: Ready=True does not

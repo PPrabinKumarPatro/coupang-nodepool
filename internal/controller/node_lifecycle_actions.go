@@ -19,9 +19,6 @@ import (
 	nodesv1alpha1 "example.com/nodepool-controller/api/v1alpha1"
 )
 
-// Walkthrough: /home/devuser/coupang-nodepool/CODE-WALKTHROUGH.md
-// Lesson 5 and the combined source trace cover authorization, draining and removal.
-//
 // Cordon ownership is separate: lifecycle actions can run even when the pool
 // owns no labels or taints and therefore has no managed-settings receipt.
 const nodeCordonAnnotation = "nodes.example.com/cordon-owner"
